@@ -111,7 +111,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Consola POO v.2017\Consola.cpp" />
+    <ClCompile Include="Formiga.cpp" />
+    <ClCompile Include="Mundo.cpp" />
+    <ClCompile Include="Ninho.cpp" />
     <ClCompile Include="Origem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Consola.h" />
+    <ClInclude Include="Formiga.h" />
+    <ClInclude Include="header.h" />
+    <ClInclude Include="Mundo.h" />
+    <ClInclude Include="Ninho.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
