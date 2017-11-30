@@ -1,7 +1,7 @@
 #include "Ninho.h"
 
 
-int Formiga::i = 0;
+int Ninho::i = 0;
 
 Ninho::Ninho()
 {

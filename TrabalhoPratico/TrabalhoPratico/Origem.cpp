@@ -1,6 +1,16 @@
 #include "header.h"
 
-
+void valida(string comando) {
+	cout << "A validar " << comando << "...";
+	if (!comando.compare(0, 9, "defmundo ")) {
+		if (comando.length() > 9) {
+				cout << "Tudo ok...";
+		}else {
+			cout << "Erro de Sintaxe";
+		}
+	}
+	
+}
 void sair() {
 	exit(0);
 }
@@ -10,6 +20,7 @@ void continuarJogo() {
 }
 
 void novoJogo() {
+	
 	string comando;
 
 	Consola::clrscr();
@@ -18,9 +29,40 @@ void novoJogo() {
 	cout << "> ";
 
 	while (1) {
-		cin >> comando;
-		if (!comando.compare("AA"))
-			cout << "AA o caralho!";
+		cin.ignore();
+		getline(cin, comando);
+		cout << comando;
+		if (!comando.compare(0, 9, "defmundo ")) {
+			valida(comando);
+		}
+		else if (!comando.compare(0,5,"defen")) {
+			valida(comando);
+		}
+		else if (!comando.compare(0,5,"defpc")) {
+			valida(comando);
+		}
+		else if (!comando.compare(0,5,"defvt")) {
+			valida(comando);
+		}
+		else if (!comando.compare(0,5,"defmi")) {
+			valida(comando);
+		}
+		else if (!comando.compare(0,5,"defme")) {
+			valida("defme");
+		}
+		else if (!comando.compare(0,5,"defnm")) {
+			valida("defnm");
+		}
+		else if (!comando.compare(0,7,"executa")) {
+			valida("executa");
+		}
+		else if (!comando.compare(0,6,"inicia")) {
+			valida("inicia");
+		}
+		else {
+			cout << "oh tone... 'ta fodereee!";
+		}
+			
 
 		break;
 	}
@@ -36,10 +78,8 @@ void mostraMenu() {
 
 int main() {
 	int opt;
-	//Consola::setBackgroundColor(Consola::AZUL);
-	
+	bool defmundo = false, defen = false, defpc = false, defvt = false, defmi = false, defme = false, defnm = false;
 
-	//Consola::getch();
 	Consola::setScreenSize(20, 50);  // linhas colunas. valores grandes pode nao dar
 	Consola::setBackgroundColor(Consola::BRANCO_CLARO);  // favor consultar o .h para ver as constantes
 	Consola::setTextColor(Consola::AMARELO_CLARO);
