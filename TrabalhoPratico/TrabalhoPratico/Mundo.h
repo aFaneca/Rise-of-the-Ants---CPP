@@ -5,10 +5,16 @@ class Mundo
 {
 
 private:
-	int dim;
+	int limite;
+	double energiaInicialNinhos;
+	double valorEnergia;
+	int posComMigalhas;
+	double energiaInicialMigalhas;
+	int maxMigalhas;
+	double energiaTransferida;
 	vector<Ninho> ninhos;
 public:
-	Mundo(int dim);
+	Mundo(int limite, double energiaInicialNinhos, double valorEnergia, int posComMigalhas, int energiaInicialMigalhas, int maxMigalhas, double energiaTransferida);
 	~Mundo();
 };
 
