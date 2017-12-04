@@ -209,6 +209,7 @@ void novoJogo() {
 			
 		}
 		else if (!comando.compare("abortar")) {
+			cout << "Abortado. Clique em qualquer tecla para sair...";
 			break;
 		}else {
 			cout << "Erro de Sintaxe!";
