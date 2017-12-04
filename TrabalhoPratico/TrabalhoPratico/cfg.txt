@@ -1,0 +1,6 @@
+qualquer merda
+inicio
+defmundo 101 1
+defmundo
+defmundo 101
+defen 2

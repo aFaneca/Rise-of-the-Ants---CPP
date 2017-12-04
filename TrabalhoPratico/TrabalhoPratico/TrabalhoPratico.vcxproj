@@ -115,14 +115,20 @@
     <ClCompile Include="Formiga.cpp" />
     <ClCompile Include="Mundo.cpp" />
     <ClCompile Include="Ninho.cpp" />
-    <ClCompile Include="Origem.cpp" />
+    <ClCompile Include="Processador.cpp" />
+    <ClCompile Include="Interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Consola.h" />
     <ClInclude Include="Formiga.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="Interface.h" />
     <ClInclude Include="Mundo.h" />
     <ClInclude Include="Ninho.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TrabalhoPratico.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
