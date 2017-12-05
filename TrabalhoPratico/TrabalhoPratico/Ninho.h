@@ -5,7 +5,6 @@ class Formiga;
 class Ninho
 {
 private:
-
 	vector<Formiga> formigas;
 	static int i;
 	int id;
