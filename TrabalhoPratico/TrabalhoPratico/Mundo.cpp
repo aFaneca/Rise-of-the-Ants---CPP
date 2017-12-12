@@ -1,5 +1,5 @@
 #include "Mundo.h"
-#include "Ninho.h"
+#include "Comunidade.h"
 using namespace std;
 
 
@@ -18,8 +18,11 @@ void Mundo::Init(int limite, double energiaInicialNinhos, double valorEnergia, i
 	this->maxMigalhas = maxMigalhas;
 	this->valorEnergia = valorEnergia;
 	//grelha.resize(limite * limite);
-	grelha.resize(limite);
+	//grelha.resize(limite);
 	iniciado = true;
+	grelha.resize(limite);
+	for (int i = 0; i < limite; i++)
+		grelha[i].resize(limite);
 }
 
 Mundo::~Mundo()
@@ -38,16 +41,7 @@ string Mundo::toString()
 	return oss.str();
 }
 
-vector<vector<char>> Mundo::getMundo()
-{
-	for (int i = 0; i < limite; i++) {
-		grelha[i].resize(limite);
-		for (int j = 0; j < limite; j++) {
-			grelha[i][j] = 'C';
-		}
-	}
-	return grelha;
-}
+
 
 int Mundo::getLimite()
 {
@@ -87,5 +81,16 @@ void Mundo::setMaxMigalhas(int v)
 void Mundo::setEnergiaTransferida(double v)
 {
 	energiaTransferida = v;
+}
+
+void Mundo::addComunidade(int posy, int posx)
+{
+	Comunidade c(posx, posy);
+	comunidades.push_back(c);
+}
+
+vector<Comunidade> Mundo::getComunidades()
+{
+	return this->comunidades;
 }
 

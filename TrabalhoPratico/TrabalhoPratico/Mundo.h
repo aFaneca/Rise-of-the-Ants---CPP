@@ -1,7 +1,10 @@
+#ifndef MUNDO_H
+#define MUNDO_H
 #pragma once
 #include "header.h"
-class Ninho;
-class Mundo
+#include "Elementos.h"
+//class Comunidade;
+class Mundo : public Elementos
 {
 
 private:
@@ -12,16 +15,16 @@ private:
 	double energiaInicialMigalhas;
 	int maxMigalhas;
 	double energiaTransferida;
-	vector<Ninho> ninhos;
+	vector<Comunidade> comunidades;
 	//vector<char> grelha;
-	vector<vector<char>>  grelha;
+	//vector<vector<char>>  grelha;
 	bool iniciado;
+
 public:
 	Mundo();
 	void Init(int limite, double energiaInicialNinhos, double valorEnergia, int posComMigalhas, double energiaInicialMigalhas, int maxMigalhas, double energiaTransferida);
 	~Mundo();
 	string toString();
-	vector<vector<char>> getMundo();
 	int getLimite();
 	bool getIniciado();
 	void setEnergiaInicialNinhos(double v);
@@ -30,7 +33,9 @@ public:
 	void setEnergiaInicialMigalhas(double v);
 	void setMaxMigalhas(int v);
 	void setEnergiaTransferida(double v);
-
+	void addComunidade(int posy, int posx);
+	vector<Comunidade> getComunidades();
 	//void mostraMundo();
 };
 
+#endif

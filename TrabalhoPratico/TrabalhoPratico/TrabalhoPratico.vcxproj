@@ -112,6 +112,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Consola POO v.2017\Consola.cpp" />
+    <ClCompile Include="Comunidade.cpp" />
+    <ClCompile Include="Elementos.cpp" />
     <ClCompile Include="Formiga.cpp" />
     <ClCompile Include="Mundo.cpp" />
     <ClCompile Include="Ninho.cpp" />
@@ -119,13 +121,14 @@
     <ClCompile Include="Interface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Comunidade.h" />
     <ClInclude Include="Consola.h" />
+    <ClInclude Include="Elementos.h" />
     <ClInclude Include="Formiga.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Mundo.h" />
     <ClInclude Include="Ninho.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrabalhoPratico.rc" />

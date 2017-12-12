@@ -1,6 +1,7 @@
 #include "header.h"
 #include "Mundo.h"
 #include "Ninho.h"
+#include "Comunidade.h"
 using namespace std;
 vector<string> divideEmPalavras(string str) {
 	istringstream iss(str);
@@ -14,6 +15,8 @@ vector<string> divideEmPalavras(string str) {
 	return palavra;
 }
 
+
+//VALIDA COMANDOS
 bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida) {
 	if (palavra[0] == "defmundo") {
 		if (palavra.size() != 2 + 1)
@@ -32,6 +35,8 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 			}
 			
 		}
+
+		return false;
 	}
 	else if (palavra[0] == "defen") {
 		if (palavra.size() != 2 + 1)
@@ -124,6 +129,46 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 			cout << "A executar ficheiro...";
 			
 			return true;
+		}
+	}
+	else if (palavra[0] == "ninho") {
+		if (palavra.size() != 3 + 1) {
+			cout << "Será que quis dizer \"ninho <linha> <coluna>\"?";
+
+		}
+		else {
+			try {
+				int posy = stoi(palavra[1]);
+				int posx = stoi(palavra[2]);
+
+				if (posy <= *limite && posx <= *limite && posy > 0 && posx > 0)
+					return true;
+				else {
+					cerr << "Coordenadas invalidas! (Acima do limite definido)";
+				}
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"ninho <linha> <coluna>\"";
+				return false;
+			}
+		}
+	}
+	else if (palavra[0] == "criaf") {
+		if (palavra.size() != 4 + 1) {
+			cout << "Será que quis dizer \"criaf <F> <T> <N>\"?";
+		}
+		else if (palavra[2].size() != 1 || palavra[2].compare("E") != 0) {
+			cerr << "Tipo de Formiga inválido.";
+		}
+		else {
+			try {
+				int nFormigas = stoi(palavra[1]);
+				return true;
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"criaf <F> <T> <N>\"";
+				return false;
+			}
 		}
 	}
 	else {
@@ -362,6 +407,47 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 			cout << "Abortado. Clique em qualquer tecla para sair...";
 			break;
 		}
+		else if (!comando.compare(0, 6, "ninho ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//cout << stoi(palavra[1]) << stoi(palavra[2]);
+					if (!ocupada(stoi(palavra[2]), stoi(palavra[1])) ){
+						mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
+					}
+					else
+						cerr << "Já existe um elemento nessa posição!";
+					
+				}
+			}
+		}
+		else if (!comando.compare(0, 6, "criaf ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//cout << stoi(palavra[1]) << stoi(palavra[2]);
+					//mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int) stoi(palavra[3])) {
+							//ADICIONAR FORMIGAS AO NINHO
+							mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
+							//cout << stoi(palavra[3]);
+							encontrou = true;
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+					
+
+				}
+			}
+		}
 		else {
 			Consola::clrscr();
 			cout << "Erro de Sintaxe!";
@@ -375,7 +461,6 @@ void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia
 	mundo.Init(*limite, *energiaInicialNinhos, *valorEnergia, *posComMigalhas, *energiaInicialMigalhas, *maxMigalhas, *energiaTransferida);
 	//mostraMundo(mundo);
 
-	
 }
 
 
