@@ -5,8 +5,8 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V0.9.5
-* Data: 14/12/2017 00h55
+* Versão: V0.9.7
+* Data: 14/12/2017 14:40
 /***************************************************************/
 
 #include <sstream>
@@ -41,4 +41,6 @@ void addGrelha(int x, int y, char avatar);
 bool validaPos(int x, int y, int dx, int dy, int limite);
 void movimentos(Mundo & mundo);
 void listaMundo(Mundo & mundo);
+void listaNinho(int id, Mundo & mundo);
+void listaPosicao(int x, int y, Mundo & mundo);
 #endif

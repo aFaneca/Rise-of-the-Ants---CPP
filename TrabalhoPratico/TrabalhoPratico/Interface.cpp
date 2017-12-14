@@ -72,6 +72,21 @@ void sair() {
 	exit(0);
 }
 
+
+void listaNinho(int id, Mundo &mundo) {
+	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
+	cout << "## INFO DO NINHO ##" << endl;
+	cout << "-> Comunidade " << mundo.getComunidades()[id - 1].getId() << endl;
+	cout << "\t " << (char)desenho.ident1 << " Formigas: (TOTAL: " << mundo.getComunidades()[id - 1].getNinho()->getFormigas().size() << " )" << endl;
+	for (int j = 0; j < mundo.getComunidades()[id - 1].getNinho()->getFormigas().size(); j++) {
+		cout << "\t\t" << (char)desenho.ident2 << " Formiga " << mundo.getComunidades()[id - 1].getNinho()->getFormigas()[j].getId() << endl;
+		cout << "\t\t\t" << (char)desenho.ident3 << " TIPO: " << mundo.getComunidades()[id - 1].getNinho()->getFormigas()[j].getTipo() << endl;
+		cout << "\t\t\t" << (char)desenho.ident3 << " Energia: " << mundo.getComunidades()[id - 1].getNinho()->getFormigas()[j].getEnergia() << endl;
+		cout << "\t\t\t" << (char)desenho.ident3 << " Posicao: (" << mundo.getComunidades()[id - 1].getNinho()->getFormigas()[j].posx << ", " << 
+			mundo.getComunidades()[id - 1].getNinho()->getFormigas()[j].posy << ")" <<endl;
+	}
+}
+
 void listaMundo(Mundo & mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
 	cout << "## INFO DO MUNDO ##" << endl;
@@ -79,17 +94,42 @@ void listaMundo(Mundo & mundo) {
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
 		cout <<"-> Comunidade " << mundo.getComunidades()[i].getId() << endl;
 		cout << "\t " << (char)desenho.ident1 << " Formigas: (TOTAL: " << mundo.getComunidades()[i].getNinho()->getFormigas().size() << " )" << endl;
-		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
+		// LISTAGEM DAS FORMIGAS - DESNECESSARIO NESTE COMANDO - VER LISTANINHO()
+	/*	for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
 			cout << "\t\t" << (char)desenho.ident2 << " Formiga " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].getId() << endl;
 			cout << "\t\t\t" << (char)desenho.ident3 << " TIPO: " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].getTipo() << endl;
 			cout << "\t\t\t" << (char)desenho.ident3 << " Energia: " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].getEnergia() << endl;
 		}
+		*/
 	}
-
-
 	// RETORNA À POSICAO ORIGINAL NO ECRA
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 1);
 }
+
+
+void listaPosicao(int x, int y, Mundo & mundo) {
+	int total = 0;
+	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
+	cout << "## INFO DO NINHO (" << x << ", " << y << ") ##" << endl;
+	for (int i = 0; i < mundo.getComunidades().size(); i++) {
+		int px = mundo.getComunidades()[i].posx;
+		int py = mundo.getComunidades()[i].posy;
+		if (px == x && py == y) {
+			cout << "  " <<desenho.ident1 << " Ninho " << mundo.getComunidades()[i].getId() << endl;
+			total++;
+		}	
+		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
+			int px = mundo.getComunidades()[i].getNinho()->getFormigas()[j].posx;
+			int py = mundo.getComunidades()[i].getNinho()->getFormigas()[j].posy;
+			if (px == x && py == y) {
+				cout << "  " << desenho.ident1 << " Formiga " << mundo.getComunidades()[i].getId() << endl;
+				total++;
+			}		
+		}
+	}
+	cout << "\t" << desenho.ident2 << " TOTAL: " << total;
+}
+
 
 bool ocupada(int x, int y)
 {

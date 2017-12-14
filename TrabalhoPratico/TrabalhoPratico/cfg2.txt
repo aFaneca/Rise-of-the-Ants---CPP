@@ -6,3 +6,4 @@ criaf 5 E 2
 tempo
 tempo
 tempo
+listaposicao 6 5

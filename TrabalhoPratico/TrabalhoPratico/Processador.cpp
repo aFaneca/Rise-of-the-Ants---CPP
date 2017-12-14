@@ -171,6 +171,36 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 			}
 		}
 	}
+	else if (palavra[0] == "listaninho") {
+		if (palavra.size() != 2 + 1) {
+			cout << "Será que quis dizer \"listaninho <N>\"?";
+		}else {
+			try {
+				int idNinho = stoi(palavra[1]);
+				return true;
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"listaninho <N>\"";
+				return false;
+			}
+		}
+	}
+	else if (palavra[0] == "listaposicao") {
+		if (palavra.size() != 3 + 1) {
+			cout << "Será que quis dizer \"listaninho <linha> <coluna>\"?";
+		}
+		else {
+			try {
+				int x = stoi(palavra[2]);
+				int y = stoi(palavra[1]);
+				return true;
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"listaninho <linha> <coluna>\"";
+				return false;
+			}
+		}
+	}
 	else {
 		cout << "Comando não reconhecido...";
 	}
@@ -298,6 +328,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 			}
 		}
 		else if (!comando.compare(0, 6, "criaf ")) {
+			mostraMundo(mundo);
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
@@ -339,6 +370,53 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 				cerr << "Algumas configurações em falta!";
 			}
 		}
+		else if (!comando.compare(0, 11, "listaninho ")) {
+			mostraMundo(mundo);
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[1])) {
+							// SE EXISTIR
+							listaNinho(stoi(palavra[1]), mundo);
+							encontrou = true;
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+				}
+			}
+		}
+		else if (!comando.compare(0, 13, "listaposicao ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+
+					//VERIFICAR SE A POSICAO EXISTE
+					int x = stoi(palavra[2]);
+					int y = stoi(palavra[1]);
+
+					if (x < 1 || y < 1 || x > *limite || y > *limite) //SE NÃO ULTRAPASSAR OS LIMITES
+						cerr << "Posicao Invalida.";
+					else
+						listaPosicao(x, y, mundo);
+				}
+			}
+		}
+		else if (!comando.compare("listamundo")) {
+			Consola::clrscr();
+			if (*inicio)
+				listaMundo(mundo);
+			else
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+		}
+		
 		else if (!comando.compare("abortar")) {
 			Consola::clrscr();
 			cout << "Abortado. Clique em qualquer tecla para sair...";
@@ -507,6 +585,44 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 				listaMundo(mundo);
 			else
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+		}
+		else if (!comando.compare(0, 11, "listaninho ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[1])) {
+							// SE EXISTIR
+							listaNinho(stoi(palavra[1]), mundo);
+							encontrou = true;
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+				}
+			}
+		}
+		else if (!comando.compare(0, 13, "listaposicao ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+
+					//VERIFICAR SE A POSICAO EXISTE
+					int x = stoi(palavra[2]);
+					int y = stoi(palavra[1]);
+
+					if (x < 1 || y < 1 || x > limite || y > limite) //SE NÃO ULTRAPASSAR OS LIMITES
+						cerr << "Posicao Invalida.";
+					else
+						listaPosicao(x, y, mundo);
+				}
+			}
 		}
 		else {
 			Consola::clrscr();
