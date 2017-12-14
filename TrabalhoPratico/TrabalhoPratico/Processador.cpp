@@ -282,6 +282,53 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 					mundo.setMaxMigalhas(stoi(palavra[1]));
 			}
 		}
+		else if (!comando.compare(0, 6, "ninho ")) {
+			mostraMundo(mundo);
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					cout << stoi(palavra[1]) << stoi(palavra[2]);
+					if (!ocupada(stoi(palavra[2]), stoi(palavra[1]))) {
+						mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
+					}else
+						cerr << "Já existe um elemento nessa posição!";
+				}
+			}
+		}
+		else if (!comando.compare(0, 6, "criaf ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					//cout << stoi(palavra[1]) << stoi(palavra[2]);
+					//mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[3])) {
+							//ADICIONAR FORMIGAS AO NINHO
+							for (int j = 0; j < (int)stoi(palavra[1]); j++)
+								mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
+							//cout << stoi(palavra[3]);
+							encontrou = true;
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+				}
+			}
+		}
+		else if (!comando.compare("tempo")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				movimentos(mundo);
+			}
+		}
 		else if (!comando.compare(0, 6, "inicio")) {
 			Consola::clrscr();
 			if (*defmundo = *defen = *defpc = *defvt = *defmi = *defme = *defnm == true) {
@@ -419,7 +466,6 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 					}
 					else
 						cerr << "Já existe um elemento nessa posição!";
-					
 				}
 			}
 		}
@@ -436,17 +482,31 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 					for (int i = 0; i < mundo.getComunidades().size(); i++) {
 						if (mundo.getComunidades()[i].getId() == (int) stoi(palavra[3])) {
 							//ADICIONAR FORMIGAS AO NINHO
-							mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
+							for(int j = 0; j < (int) stoi(palavra[1]); j++)
+								mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
 							//cout << stoi(palavra[3]);
 							encontrou = true;
 						}
 					}
 					if (encontrou == false)
 						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
-					
-
 				}
 			}
+		}
+		else if (!comando.compare("tempo")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				movimentos(mundo);
+			}
+		}
+		else if (!comando.compare("listamundo")) {
+			Consola::clrscr();
+			if(*inicio)
+				listaMundo(mundo);
+			else
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 		}
 		else {
 			Consola::clrscr();

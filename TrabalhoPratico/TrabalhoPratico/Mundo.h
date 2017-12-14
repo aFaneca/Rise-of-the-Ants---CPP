@@ -34,7 +34,7 @@ public:
 	void setMaxMigalhas(int v);
 	void setEnergiaTransferida(double v);
 	void addComunidade(int posy, int posx);
-	vector<Comunidade> getComunidades();
+	vector<Comunidade> & getComunidades();
 	//void mostraMundo();
 };
 

@@ -9,7 +9,8 @@ public:
 
 	int posx, posy;
 	char avatar;
-	bool ocupada(int x, int y);
+	int raioVisao, dx = 0, dy = 0;
+	int energia;
 };
 
 #endif

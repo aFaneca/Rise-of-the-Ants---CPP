@@ -9,12 +9,18 @@ private:
 	static int i;
 	int id;
 	char tipo;
+	
 
 public:
 
 	Formiga(char tipo, int posx, int posy);
 	~Formiga();
 	char getTipo();
+	void mover(int limite);
+	void setPosx(int x);
+	void setPosy(int y);
+	int getId();
+	int getEnergia();
 };
 
 #endif

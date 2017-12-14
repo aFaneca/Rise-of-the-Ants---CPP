@@ -29,9 +29,6 @@ Mundo::~Mundo()
 {
 }
 
-
-
-
 string Mundo::toString()
 {
 	ostringstream oss;
@@ -40,8 +37,6 @@ string Mundo::toString()
 		<< maxMigalhas << " | EnergiaTransferida: " << energiaTransferida << endl;
 	return oss.str();
 }
-
-
 
 int Mundo::getLimite()
 {
@@ -89,7 +84,7 @@ void Mundo::addComunidade(int posy, int posx)
 	comunidades.push_back(c);
 }
 
-vector<Comunidade> Mundo::getComunidades()
+vector<Comunidade> &Mundo::getComunidades()
 {
 	return this->comunidades;
 }

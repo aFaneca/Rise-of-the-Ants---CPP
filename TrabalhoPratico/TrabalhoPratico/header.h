@@ -5,8 +5,8 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V0.9
-* Data: 12/12/2017 19h50
+* Versão: V0.9.5
+* Data: 14/12/2017 00h55
 /***************************************************************/
 
 #include <sstream>
@@ -37,4 +37,8 @@ double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double 
 void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas,
 	double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo); 
 bool ocupada(int x, int y);
+void addGrelha(int x, int y, char avatar);
+bool validaPos(int x, int y, int dx, int dy, int limite);
+void movimentos(Mundo & mundo);
+void listaMundo(Mundo & mundo);
 #endif

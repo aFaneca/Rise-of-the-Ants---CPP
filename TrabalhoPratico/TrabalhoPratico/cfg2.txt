@@ -1,0 +1,8 @@
+ninho 5 6
+criaf 5 E 1
+tempo
+tempo
+criaf 5 E 2
+tempo
+tempo
+tempo

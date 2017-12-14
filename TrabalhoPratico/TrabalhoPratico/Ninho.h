@@ -16,7 +16,7 @@ public:
 	Ninho(int posx, int posy);
 	~Ninho();
 	int getId();
-	vector<Formiga> getFormigas();
+	vector<Formiga>& getFormigas();
 	void addFormiga(char tipo, Mundo & mundo);
 };
 

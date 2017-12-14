@@ -11,6 +11,9 @@ struct desenhos {
 	char cantoInferiorDireito = 188;
 	char linhaHorizontal = 205;
 	char linhaVertical = 186;
+	char ident1 = 175;
+	char ident2 = 254;
+	char ident3 = 248;
 } desenho;
 
 
@@ -19,8 +22,8 @@ int main() {
 	//setlocale(LC_ALL, "Portuguese"); <- causa bug com os caractéres ascii
 	int opt;
 	//Ninho n;
-
-	Consola::setScreenSize(1000, 1000);  // linhas colunas. valores grandes pode nao dar
+	srand(time(NULL));
+	Consola::setScreenSize(1000, 4000);  // linhas colunas. valores grandes pode nao dar
 	Consola::setBackgroundColor(Consola::BRANCO_CLARO);  // favor consultar o .h para ver as constantes
 	Consola::clrscr();
 	Consola::setTextColor(Consola::PRETO);
@@ -69,14 +72,67 @@ void sair() {
 	exit(0);
 }
 
+void listaMundo(Mundo & mundo) {
+	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
+	cout << "## INFO DO MUNDO ##" << endl;
+	cout << "Comunidades ( TOTAL: " << mundo.getComunidades().size() << ")" << endl;
+	for (int i = 0; i < mundo.getComunidades().size(); i++) {
+		cout <<"-> Comunidade " << mundo.getComunidades()[i].getId() << endl;
+		cout << "\t " << (char)desenho.ident1 << " Formigas: (TOTAL: " << mundo.getComunidades()[i].getNinho()->getFormigas().size() << " )" << endl;
+		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
+			cout << "\t\t" << (char)desenho.ident2 << " Formiga " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].getId() << endl;
+			cout << "\t\t\t" << (char)desenho.ident3 << " TIPO: " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].getTipo() << endl;
+			cout << "\t\t\t" << (char)desenho.ident3 << " Energia: " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].getEnergia() << endl;
+		}
+	}
+
+
+	// RETORNA À POSICAO ORIGINAL NO ECRA
+	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 1);
+}
 
 bool ocupada(int x, int y)
 {
-	if (grelha[x][y] == 'V')
+	
+	 if (grelha[x-1][y-1] == 'V')
 		return false;
 
 	return true;
+	
 }
+
+bool validaPos(int x, int y, int dx, int dy, int limite) {
+	x += dx;
+	y += dy;
+	
+	if (x < 1 || y < 1 || x > limite || y > limite) //SE NÃO ULTRAPASSAR OS LIMITES
+		return false;
+	else {
+		if (!ocupada(x, y)) { // SE NÃO ESTIVER OCUPADA
+			return true;
+		}
+	}
+
+	return false;
+	}
+
+void addGrelha(int x, int y, char avatar) {
+	grelha[x - 1][y - 1] = avatar;
+}
+
+void movimentos(Mundo & mundo) {
+	for (int i = 0; i < mundo.getComunidades().size(); i++) {
+		// VERIFICA NINHOS
+		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
+			// VERIFICA AS FORMIGAS DE CADA NINHO
+			mundo.getComunidades()[i].getNinho()->getFormigas()[j].mover(mundo.getLimite());
+
+			cout << "MOVIMENTOS: " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].posx << " - " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].posy;
+		}
+	}
+}
+
+
 
 void mostraMundo(Mundo & mundo)
 {	
@@ -88,7 +144,7 @@ void mostraMundo(Mundo & mundo)
 	Consola::setTextColor(Consola::CYAN);
 	
 	cout << endl;
-	info(mundo);
+	//info(mundo);
 	
 	
 	grelha.clear();
@@ -99,9 +155,11 @@ void mostraMundo(Mundo & mundo)
 	for (int i = 0; i < mundo.getLimite(); i++) {
 		for (int j = 0; j < mundo.getLimite(); j++) {
 			grelha[i][j] = 'V';
+			//cout << grelha[i][j];
 		}
+		cout << endl;
 	}
-	
+
 	// CRIA O MUNDO E OS SEUS LIMITES
 	Consola::gotoxy(0, LIMIAR);
 	cout << desenho.cantoSuperiorEsquerdo;
@@ -120,7 +178,7 @@ void mostraMundo(Mundo & mundo)
 		cout << desenho.linhaHorizontal;
 	cout << desenho.cantoInferiorDireito;
 	cout << endl;
-	
+
 	vector<Comunidade> comunidades;
 	// ADICIONA OS ELEMENTOS NO MUNDO
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
@@ -129,23 +187,23 @@ void mostraMundo(Mundo & mundo)
 		posx = comunidade.getNinho()->posx;
 		posy = comunidade.getNinho()->posy;
 		avatar = comunidade.getNinho()->avatar;
-		grelha[posx][posy] = 'N';
+		grelha[posx-1][posy-1] = 'N';
 		Consola::gotoxy(posx, posy + LIMIAR);
 		cout << avatar;
 
 		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
 			// VERIFICA AS FORMIGAS DE CADA NINHO
-			posx = mundo.getComunidades()[i].getNinho()->getFormigas()[i].posx;
-			posy = mundo.getComunidades()[i].getNinho()->getFormigas()[i].posy;
-			avatar = mundo.getComunidades()[i].getNinho()->getFormigas()[i].avatar;
-			grelha[posx][posy] = mundo.getComunidades()[i].getNinho()->getFormigas()[i].getTipo();
+			posx = mundo.getComunidades()[i].getNinho()->getFormigas()[j].posx;
+			posy = mundo.getComunidades()[i].getNinho()->getFormigas()[j].posy;
+			avatar = mundo.getComunidades()[i].getNinho()->getFormigas()[j].avatar;
+			grelha[posx-1][posy-1] = mundo.getComunidades()[i].getNinho()->getFormigas()[j].getTipo();
+			
 			Consola::gotoxy(posx, posy + LIMIAR);
 			cout << avatar;
 		}
 
 	}
 	
-
 	// RETORNA À POSICAO ORIGINAL NO ECRA
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 1);
 	}
