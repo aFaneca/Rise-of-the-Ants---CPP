@@ -41,10 +41,11 @@ void Formiga::mover(int limite)
 		}
 
 	} while (!validaPos(this->posx, this->posy,this->dx, this->dy, limite));
-	this->posx += this->dx;
-	this->posy += this->dy;
-
-	this->energia--;
+	int novaPosX = this->posx + this->dx;
+	int novaPosY = this->posy + this->dy;
+	this->energia -= (1 + (abs(novaPosX - posx) + abs(novaPosY - posy))); // energia = energia - (1 + MovimentoEfetivo) <- ver Enunciado
+	this->posx = novaPosX;
+	this->posy = novaPosY;
 	}
 
 void Formiga::setPosx(int x)
