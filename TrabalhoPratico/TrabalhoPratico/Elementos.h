@@ -9,7 +9,7 @@ public:
 
 	int posx, posy;
 	char avatar;
-	int raioVisao, dx = 0, dy = 0;
+	int raioVisao, raioMovimento, dx = 0, dy = 0;
 	int energia;
 };
 

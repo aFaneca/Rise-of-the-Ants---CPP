@@ -10,6 +10,7 @@ Formiga::Formiga(char tipo, int posx, int posy)
 	if (tipo == 'E') {
 		this->avatar = 'E';
 		this->raioVisao = 10;
+		this->raioMovimento = 8;
 		this->energia = 200; 
 	}
 	
@@ -31,8 +32,8 @@ void Formiga::mover(int limite)
 {
 	int tentativas = 0;
 	do {
-		this->dx = rand() % (2 * raioVisao + 1) - raioVisao;
-		this->dy = rand() % (2 * raioVisao + 1) - raioVisao;
+		this->dx = rand() % (2 * raioMovimento + 1) - raioMovimento;
+		this->dy = rand() % (2 * raioMovimento + 1) - raioMovimento;
 		
 		if (tentativas++ > 100) {
 			cerr << "Não existem mais movimentos disponiveis.";
@@ -44,7 +45,6 @@ void Formiga::mover(int limite)
 	this->posy += this->dy;
 
 	this->energia--;
-	
 	}
 
 void Formiga::setPosx(int x)
@@ -65,4 +65,9 @@ int Formiga::getId()
 int Formiga::getEnergia()
 {
 	return this->energia;
+}
+
+void Formiga::suicidio()
+{
+		delete this;
 }

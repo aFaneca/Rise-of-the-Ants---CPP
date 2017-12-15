@@ -5,13 +5,9 @@
 Comunidade::Comunidade(int posx, int posy) 
 {
 	cout << "Nova comunidade adicionada!";
-	//Ninho n(posx, posy);
-	//ninho = &n;
 	ninho = new Ninho(posx, posy);
-	
 	this->id = (ninho)->getId();
 	cout << "ID: " << this->id;
-	
 }
 
 

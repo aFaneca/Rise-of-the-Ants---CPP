@@ -14,7 +14,6 @@ public:
 	Comunidade(int posx, int posy);
 	~Comunidade();
 	Ninho* getNinho();
-	//vector<Ninho> ninhos;
 	int getId();
 };
 

@@ -17,8 +17,6 @@ void Mundo::Init(int limite, double energiaInicialNinhos, double valorEnergia, i
 	this->energiaInicialMigalhas = energiaInicialMigalhas;
 	this->maxMigalhas = maxMigalhas;
 	this->valorEnergia = valorEnergia;
-	//grelha.resize(limite * limite);
-	//grelha.resize(limite);
 	iniciado = true;
 	grelha.resize(limite);
 	for (int i = 0; i < limite; i++)

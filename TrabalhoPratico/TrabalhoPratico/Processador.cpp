@@ -33,7 +33,6 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 			}catch (const invalid_argument& ia) {
 				cerr << "Formato Inválido:  \"defmundo <limite>\"";
 			}
-			
 		}
 
 		return false;
@@ -134,7 +133,6 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 	else if (palavra[0] == "ninho") {
 		if (palavra.size() != 3 + 1) {
 			cout << "Será que quis dizer \"ninho <linha> <coluna>\"?";
-
 		}
 		else {
 			try {
@@ -219,7 +217,7 @@ string executaFicheiro(string nomeFicheiro, int linha) {
 				comando == "ERRO! O ficheiro chegou ao fim!";
 			}
 		}
-	} else comando = "ERRO! Impossível abrir o ficheiro (será que o processo esteja ocupado? ou talvez o documento já não exista..."; 
+	} else comando = "ERRO! Impossível abrir o ficheiro (sera que o processo esta ocupado? ou talvez o documento ja nao exista..."; 
 
 	ficheiro.close();
 	return comando; // LEITURA DO FICHEIRO EFETUADA COM SUCESSO
@@ -230,7 +228,7 @@ int contaLinhasFicheiro(string nomeFicheiro) {
 	string linha;
 	ifstream ficheiro(nomeFicheiro);
 	if (!ficheiro) {
-		cout << "Ficheiro não encontrado :/";
+		cout << "Ficheiro nao encontrado :/";
 		return -1;
 	}
 	while (getline(ficheiro, linha))
@@ -261,7 +259,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 					*defmundo = true;
 				}
 			}else {
-				cerr << "A simualção já se encontra a decorrer. Não pode fazer alterações a este campo!";
+				cerr << "A simulacao já se encontra a decorrer. Não pode fazer alterações a este campo!";
 			}
 		}
 		else if (!comando.compare(0, 6, "defen ")) {
@@ -319,11 +317,10 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 			else {
 				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
-					cout << stoi(palavra[1]) << stoi(palavra[2]);
 					if (!ocupada(stoi(palavra[2]), stoi(palavra[1]))) {
 						mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
 					}else
-						cerr << "Já existe um elemento nessa posição!";
+						cerr << "Ja existe um elemento nessa posicao!";
 				}
 			}
 		}
@@ -343,12 +340,11 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 							//ADICIONAR FORMIGAS AO NINHO
 							for (int j = 0; j < (int)stoi(palavra[1]); j++)
 								mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
-							//cout << stoi(palavra[3]);
 							encontrou = true;
 						}
 					}
 					if (encontrou == false)
-						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+						cerr << "O Ninho nao foi encontrado (ID ERRADO?)";
 				}
 			}
 		}
@@ -367,7 +363,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 				iniciaSimul(limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida, mundo);
 			}
 			else {
-				cerr << "Algumas configurações em falta!";
+				cerr << "Algumas configuracoes em falta!";
 			}
 		}
 		else if (!comando.compare(0, 11, "listaninho ")) {
@@ -387,7 +383,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 						}
 					}
 					if (encontrou == false)
-						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+						cerr << "O Ninho nao foi encontrado (ID ERRADO?)";
 				}
 			}
 		}
@@ -417,7 +413,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 		}
 		
-		else if (!comando.compare("abortar")) {
+		else if (!comando.compare("sair")) {
 			Consola::clrscr();
 			cout << "Abortado. Clique em qualquer tecla para sair...";
 			break;
@@ -452,7 +448,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 		cout << "\n> ";
 		getline(cin, comando);
 		vector<string> palavra = divideEmPalavras(comando);
-		//cout << comando;
+
 		if (!comando.compare(0, 9, "defmundo ")) {
 			Consola::clrscr();
 			if (!(*inicio)) {
@@ -460,7 +456,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 					*defmundo = true;
 				}
 			}else {
-					cerr << "A simualção já se encontra a decorrer. Não pode fazer alterações a este campo!";
+					cerr << "A simualcao ja se encontra a decorrer. Não pode fazer alteracoes a este campo!";
 				}
 		}
 		else if (!comando.compare(0, 6, "defen ")) {
@@ -528,7 +524,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 				cerr << "Algumas configurações em falta!";
 			}
 		}
-		else if (!comando.compare("abortar")) {
+		else if (!comando.compare("sair")) {
 			cout << "Abortado. Clique em qualquer tecla para sair...";
 			break;
 		}
@@ -635,8 +631,6 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas,
 	double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo) {
 	mundo.Init(*limite, *energiaInicialNinhos, *valorEnergia, *posComMigalhas, *energiaInicialMigalhas, *maxMigalhas, *energiaTransferida);
-	//mostraMundo(mundo);
-
 }
 
 

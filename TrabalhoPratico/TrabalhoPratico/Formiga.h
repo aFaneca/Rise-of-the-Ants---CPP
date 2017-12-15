@@ -21,6 +21,7 @@ public:
 	void setPosy(int y);
 	int getId();
 	int getEnergia();
+	void suicidio();
 };
 
 #endif

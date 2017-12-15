@@ -16,8 +16,6 @@ private:
 	int maxMigalhas;
 	double energiaTransferida;
 	vector<Comunidade> comunidades;
-	//vector<char> grelha;
-	//vector<vector<char>>  grelha;
 	bool iniciado;
 
 public:
@@ -35,7 +33,6 @@ public:
 	void setEnergiaTransferida(double v);
 	void addComunidade(int posy, int posx);
 	vector<Comunidade> & getComunidades();
-	//void mostraMundo();
 };
 
 #endif

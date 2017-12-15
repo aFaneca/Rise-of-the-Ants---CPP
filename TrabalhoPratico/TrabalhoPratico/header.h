@@ -5,17 +5,17 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V0.9.7
-* Data: 14/12/2017 14:40
+* Versão: V1.0
+* Data: 15/12/2017 02:05
 /***************************************************************/
 
 #include <sstream>
 #include <string>
 #include <iostream>
 #include <vector>
-#include <locale.h>
 #include <fstream>
 #include <ctime> 
+#include <tchar.h>
 #include "Consola.h"
 #include "Interface.h"
 

@@ -5,55 +5,57 @@
 #include "Formiga.h"
 
 struct desenhos {
-	char cantoSuperiorEsquerdo = 201;
-	char cantoInferiorEsquerdo = 200;
-	char cantoSuperiorDireito = 187;
-	char cantoInferiorDireito = 188;
-	char linhaHorizontal = 205;
-	char linhaVertical = 186;
-	char ident1 = 175;
-	char ident2 = 254;
-	char ident3 = 248;
+	char cantoSuperiorEsquerdo = 201;   // PARA LIMITES DO MUNDO
+	char cantoInferiorEsquerdo = 200;  // PARA LIMITES DO MUNDO
+	char cantoSuperiorDireito = 187;  // PARA LIMITES DO MUNDO
+	char cantoInferiorDireito = 188; // PARA LIMITES DO MUNDO
+	char linhaHorizontal = 205;     // PARA LIMITES DO MUNDO
+	char linhaVertical = 186;      // PARA LIMITES DO MUNDO
+	char ident1 = 175;            // PARA IDENTAÇÃO DAS LISTAGENS
+	char ident2 = 254;			 // PARA IDENTAÇÃO DAS LISTAGENS
+	char ident3 = 248;			// PARA IDENTAÇÃO DAS LISTAGENS
 } desenho;
 
-
 int main() {
-	
 	//setlocale(LC_ALL, "Portuguese"); <- causa bug com os caractéres ascii
+	string sOpt;
 	int opt;
-	//Ninho n;
 	srand(time(NULL));
-	Consola::setScreenSize(1000, 4000);  // linhas colunas. valores grandes pode nao dar
-	Consola::setBackgroundColor(Consola::BRANCO_CLARO);  // favor consultar o .h para ver as constantes
+	Consola::setScreenSize(1000, 4000);  
+	Consola::setBackgroundColor(Consola::BRANCO_CLARO); 
 	Consola::clrscr();
 	Consola::setTextColor(Consola::PRETO);
 
 	Consola::setTextSize(20, 20);
 	Consola::gotoxy(10, 10);
-	cout << "SUCK MY SNAKE, BIATCH!";
-
+	Consola::setTextColor(Consola::VERMELHO);
+	cout << "THE RISE OF THE ANTS" << endl;
+	Consola::setTextColor(Consola::PRETO);
+	cout << "\t  Clique qualquer tecla para comecar...";
 	Consola::getch();
-
 
 	do {
 		mostraMenu();
-		cin >> opt;
+		cin >> sOpt;   // RECEBE O INPUT COMO STRING
+		try {
+			opt = stoi(sOpt); // TENTA CONVERTER PARA INTEIRO
+		}catch (const invalid_argument& ia) { // SE NÃO CONSEGUIR, opt = -1 PARA QUE O CICLO SE REPITA
+			opt = -1;
+		}
 		if (opt == 3)
 			sair();
 		else if (opt == 2)
 			continuarJogo();
 		else if (opt == 1)
 			novoJogo();
-
 	} while (opt < 1 || opt > 3);
 
 	Consola::getch();
-
 }
 
 void mostraMenu() {
 	Consola::clrscr();
-	cout << "## Menu ##" << endl;
+	cout << (char) 205 << (char) 205 << " Menu " << (char)205 << (char)205 << endl;
 	cout << "[1] NOVO JOGO\n[2] CONTINUAR JOGO\n[3] SAIR" << endl;
 	cout << "> ";
 }
@@ -72,10 +74,9 @@ void sair() {
 	exit(0);
 }
 
-
 void listaNinho(int id, Mundo &mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
-	cout << "## INFO DO NINHO ##" << endl;
+	cout << "## INFO DO NINHO " << id << " (" << mundo.getComunidades()[id - 1].getNinho()->posx << ", " << mundo.getComunidades()[id - 1].getNinho()->posy <<") ##" << endl;
 	cout << "-> Comunidade " << mundo.getComunidades()[id - 1].getId() << endl;
 	cout << "\t " << (char)desenho.ident1 << " Formigas: (TOTAL: " << mundo.getComunidades()[id - 1].getNinho()->getFormigas().size() << " )" << endl;
 	for (int j = 0; j < mundo.getComunidades()[id - 1].getNinho()->getFormigas().size(); j++) {
@@ -106,14 +107,13 @@ void listaMundo(Mundo & mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 1);
 }
 
-
 void listaPosicao(int x, int y, Mundo & mundo) {
 	int total = 0;
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
-	cout << "## INFO DO NINHO (" << x << ", " << y << ") ##" << endl;
+	cout << "## INFO DA POSICAO (" << x << ", " << y << ") ##" << endl;
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
-		int px = mundo.getComunidades()[i].posx;
-		int py = mundo.getComunidades()[i].posy;
+		int px = mundo.getComunidades()[i].getNinho()->posx;
+		int py = mundo.getComunidades()[i].getNinho()->posy;
 		if (px == x && py == y) {
 			cout << "  " <<desenho.ident1 << " Ninho " << mundo.getComunidades()[i].getId() << endl;
 			total++;
@@ -130,15 +130,12 @@ void listaPosicao(int x, int y, Mundo & mundo) {
 	cout << "\t" << desenho.ident2 << " TOTAL: " << total;
 }
 
-
 bool ocupada(int x, int y)
 {
-	
 	 if (grelha[x-1][y-1] == 'V')
 		return false;
 
 	return true;
-	
 }
 
 bool validaPos(int x, int y, int dx, int dy, int limite) {
@@ -152,9 +149,8 @@ bool validaPos(int x, int y, int dx, int dy, int limite) {
 			return true;
 		}
 	}
-
 	return false;
-	}
+}
 
 void addGrelha(int x, int y, char avatar) {
 	grelha[x - 1][y - 1] = avatar;
@@ -166,27 +162,24 @@ void movimentos(Mundo & mundo) {
 		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
 			// VERIFICA AS FORMIGAS DE CADA NINHO
 			mundo.getComunidades()[i].getNinho()->getFormigas()[j].mover(mundo.getLimite());
-
-			cout << "MOVIMENTOS: " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].posx << " - " << mundo.getComunidades()[i].getNinho()->getFormigas()[j].posy;
+			if (mundo.getComunidades()[i].getNinho()->getFormigas()[j].getEnergia() < 1) {
+				//mundo.getComunidades()[i].getNinho()->getFormigas()[j].suicidio();
+				mundo.getComunidades()[i].getNinho()->getFormigas().erase(mundo.getComunidades()[i].getNinho()->getFormigas().begin() + j);
+				j--;
+			}
 		}
 	}
 }
-
-
 
 void mostraMundo(Mundo & mundo)
 {	
 	int posx, posy;
 	char avatar;
-	//Consola::clrscr();
-//	vector<vector<char>> grelha = mundo.getMundo();
-	//cout << grelha.size();
 	Consola::setTextColor(Consola::CYAN);
 	
 	cout << endl;
 	//info(mundo);
-	
-	
+
 	grelha.clear();
 	grelha.resize(mundo.getLimite());
 	for (int i = 0; i < mundo.getLimite(); i++)
@@ -195,7 +188,6 @@ void mostraMundo(Mundo & mundo)
 	for (int i = 0; i < mundo.getLimite(); i++) {
 		for (int j = 0; j < mundo.getLimite(); j++) {
 			grelha[i][j] = 'V';
-			//cout << grelha[i][j];
 		}
 		cout << endl;
 	}
@@ -219,7 +211,6 @@ void mostraMundo(Mundo & mundo)
 	cout << desenho.cantoInferiorDireito;
 	cout << endl;
 
-	vector<Comunidade> comunidades;
 	// ADICIONA OS ELEMENTOS NO MUNDO
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
 		// VERIFICA NINHOS
@@ -241,7 +232,6 @@ void mostraMundo(Mundo & mundo)
 			Consola::gotoxy(posx, posy + LIMIAR);
 			cout << avatar;
 		}
-
 	}
 	
 	// RETORNA À POSICAO ORIGINAL NO ECRA
@@ -252,7 +242,6 @@ void info(Mundo & mundo)
 {
 	cout << mundo.toString();
 }
-
 
 void continuarJogo() {
 	Consola::clrscr();

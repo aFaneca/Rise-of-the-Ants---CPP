@@ -12,7 +12,6 @@ void mostraMenu();
 void novoJogo();
 void continuarJogo();
 void sair();
-
 void mostraMundo(Mundo &mundo);
 void info(Mundo &mundo);
 
