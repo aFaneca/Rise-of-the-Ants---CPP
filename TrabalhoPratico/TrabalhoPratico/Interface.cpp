@@ -248,3 +248,13 @@ void continuarJogo() {
 	cout << "Continua jogo...";
 }
 
+
+
+Interface::Interface()
+{
+}
+
+
+Interface::~Interface()
+{
+}

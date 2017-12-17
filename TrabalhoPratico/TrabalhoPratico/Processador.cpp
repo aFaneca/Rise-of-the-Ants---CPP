@@ -639,3 +639,13 @@ void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia
 
 
 
+
+
+Processador::Processador()
+{
+}
+
+
+Processador::~Processador()
+{
+}

@@ -5,8 +5,8 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V1.0
-* Data: 15/12/2017 02:05
+* Versão: V1.1
+* Data: 17/12/2017 14:15
 /***************************************************************/
 
 #include <sstream>
@@ -43,4 +43,18 @@ void movimentos(Mundo & mundo);
 void listaMundo(Mundo & mundo);
 void listaNinho(int id, Mundo & mundo);
 void listaPosicao(int x, int y, Mundo & mundo);
+
+class Interface
+{
+public:
+	Interface();
+	~Interface();
+};
+
+class Processador
+{
+public:
+	Processador();
+	~Processador();
+};
 #endif
