@@ -15,6 +15,7 @@ public:
 	~Comunidade();
 	Ninho* getNinho();
 	int getId();
+	void destruir();
 };
 
 #endif

@@ -87,3 +87,43 @@ vector<Comunidade> &Mundo::getComunidades()
 	return this->comunidades;
 }
 
+void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga)
+{
+	// PROCURA PELO NINHO (ID)
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+		if (comunidades[i].getId() == idNinho) {
+			comunidades[i].getNinho()->addFormiga(tipoFormiga, *this);
+		}
+	}
+}
+
+
+
+bool Mundo::ocupada(int x, int y)
+{
+	if (this->grelha[x - 1][y - 1] == 'V')
+		return false;
+	
+	return true;
+}
+bool Mundo::validaPos(int x, int y, int dx, int dy) {
+	x += dx;
+	y += dy;
+
+	if (x < 1 || y < 1 || x > limite || y > limite) //SE NÃO ULTRAPASSAR OS LIMITES
+		return false;
+	else {
+		if (!this->ocupada(x, y)) { // SE NÃO ESTIVER OCUPADA
+			return true;
+		}
+	}
+	return false;
+}
+void Mundo::addGrelha(int x, int y, char avatar) {
+	this->grelha[x - 1][y - 1] = avatar;
+}
+
+vector<vector<char>> Mundo::getGrelha()
+{
+	return grelha;
+}

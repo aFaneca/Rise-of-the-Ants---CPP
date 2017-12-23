@@ -26,3 +26,8 @@ int Comunidade::getId()
 {
 	return this->id;
 }
+
+void Comunidade::destruir()
+{
+	delete ninho;
+}

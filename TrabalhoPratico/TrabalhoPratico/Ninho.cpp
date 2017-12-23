@@ -35,10 +35,10 @@ void Ninho::addFormiga(char tipo, Mundo & mundo)
 	do {
 		px = rand() % (max - min + 1) + min;
 		py = rand() % (max - min + 1) + min;		
-	} while (ocupada(px,py));
+	} while (mundo.ocupada(px,py));
 
 	Formiga f(tipo, px, py);
 	formigas.reserve(formigas.size() + 1);
 	formigas.push_back(f);
-	addGrelha(px, py, f.avatar);
+	mundo.addGrelha(px, py, f.avatar);
 }

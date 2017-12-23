@@ -317,7 +317,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 			else {
 				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
-					if (!ocupada(stoi(palavra[2]), stoi(palavra[1]))) {
+					if (!mundo.ocupada(stoi(palavra[2]), stoi(palavra[1]))) {
 						mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
 					}else
 						cerr << "Ja existe um elemento nessa posicao!";
@@ -339,7 +339,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[3])) {
 							//ADICIONAR FORMIGAS AO NINHO
 							for (int j = 0; j < (int)stoi(palavra[1]); j++)
-								mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
+								mundo.addFormiga2Ninho(mundo.getComunidades()[i].getId(), palavra[2].at(0));
 							encontrou = true;
 						}
 					}
@@ -401,7 +401,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 					if (x < 1 || y < 1 || x > *limite || y > *limite) //SE NÃO ULTRAPASSAR OS LIMITES
 						cerr << "Posicao Invalida.";
 					else
-						listaPosicao(x, y, mundo);
+						listaPosicao(y, x, mundo);
 				}
 			}
 		}
@@ -415,6 +415,10 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 		
 		else if (!comando.compare("sair")) {
 			Consola::clrscr();
+			//DESTRUIR PONTEIRO PARA NINHO
+			for (int i = 0; i < mundo.getComunidades().size(); i++)
+				mundo.getComunidades()[i].destruir();
+
 			cout << "Abortado. Clique em qualquer tecla para sair...";
 			break;
 		}
@@ -534,8 +538,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 			else {
 				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
-					//cout << stoi(palavra[1]) << stoi(palavra[2]);
-					if (!ocupada(stoi(palavra[2]), stoi(palavra[1])) ){
+					if (!mundo.ocupada(stoi(palavra[2]), stoi(palavra[1])) ){
 						mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
 					}
 					else
@@ -550,14 +553,15 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 			else {
 				bool encontrou = false;
 				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
-					//cout << stoi(palavra[1]) << stoi(palavra[2]);
-					//mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
+
 					//VERIFICAR SE O NINHO EXISTE
 					for (int i = 0; i < mundo.getComunidades().size(); i++) {
 						if (mundo.getComunidades()[i].getId() == (int) stoi(palavra[3])) {
 							//ADICIONAR FORMIGAS AO NINHO
-							for(int j = 0; j < (int) stoi(palavra[1]); j++)
-								mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
+							for (int j = 0; j < (int)stoi(palavra[1]); j++)
+								mundo.addFormiga2Ninho(mundo.getComunidades()[i].getId(), palavra[2].at(0));
+							
+								//mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
 							//cout << stoi(palavra[3]);
 							encontrou = true;
 						}
@@ -616,7 +620,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 					if (x < 1 || y < 1 || x > limite || y > limite) //SE NÃO ULTRAPASSAR OS LIMITES
 						cerr << "Posicao Invalida.";
 					else
-						listaPosicao(x, y, mundo);
+						listaPosicao(y, x, mundo);
 				}
 			}
 		}
@@ -632,13 +636,6 @@ void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia
 	double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo) {
 	mundo.Init(*limite, *energiaInicialNinhos, *valorEnergia, *posComMigalhas, *energiaInicialMigalhas, *maxMigalhas, *energiaTransferida);
 }
-
-
-
-
-
-
-
 
 
 Processador::Processador()

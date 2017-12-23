@@ -5,8 +5,8 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V1.1
-* Data: 17/12/2017 14:15
+* Versão: V1.2
+* Data: 23/12/2017 22:40
 /***************************************************************/
 
 #include <sstream>
@@ -27,7 +27,7 @@ class Comunidade;
 class Ninho;
 using namespace std;
 
-static vector<vector<char>> grelha;
+
 string executaFicheiro(string nomeFicheiro, int linha);
 void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, bool *defmi, bool *defme, bool *defnm, bool *executa, bool *inicio);
 bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida);
@@ -36,9 +36,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo);
 void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas,
 	double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo); 
-bool ocupada(int x, int y);
-void addGrelha(int x, int y, char avatar);
-bool validaPos(int x, int y, int dx, int dy, int limite);
+
 void movimentos(Mundo & mundo);
 void listaMundo(Mundo & mundo);
 void listaNinho(int id, Mundo & mundo);

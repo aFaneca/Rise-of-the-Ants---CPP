@@ -16,7 +16,7 @@ public:
 	Formiga(char tipo, int posx, int posy);
 	~Formiga();
 	char getTipo();
-	void mover(int limite);
+	void mover(int limite, Mundo & mundo);
 	void setPosx(int x);
 	void setPosy(int y);
 	int getId();

@@ -1,5 +1,5 @@
 #include "Formiga.h"
-
+#include "Mundo.h"
 
 int Formiga::i = 0;
 
@@ -28,7 +28,7 @@ char Formiga::getTipo()
 	return this->tipo;
 }
 
-void Formiga::mover(int limite)
+void Formiga::mover(int limite, Mundo & mundo)
 {
 	int tentativas = 0;
 	do {
@@ -39,8 +39,8 @@ void Formiga::mover(int limite)
 			cerr << "Não existem mais movimentos disponiveis.";
 			break;
 		}
-
-	} while (!validaPos(this->posx, this->posy,this->dx, this->dy, limite));
+		
+	} while (!mundo.validaPos(this->posx, this->posy,this->dx, this->dy));
 	int novaPosX = this->posx + this->dx;
 	int novaPosY = this->posy + this->dy;
 	this->energia -= (1 + (abs(novaPosX - posx) + abs(novaPosY - posy))); // energia = energia - (1 + MovimentoEfetivo) <- ver Enunciado
