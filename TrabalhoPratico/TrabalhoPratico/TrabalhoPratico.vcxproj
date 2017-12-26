@@ -119,16 +119,18 @@
     <ClCompile Include="Ninho.cpp" />
     <ClCompile Include="Processador.cpp" />
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="Regra.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Comunidade.h" />
     <ClInclude Include="Consola.h" />
     <ClInclude Include="Elementos.h" />
     <ClInclude Include="Formiga.h" />
-    <ClInclude Include="header.h" />
+    <ClInclude Include="Processador.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Mundo.h" />
     <ClInclude Include="Ninho.h" />
+    <ClInclude Include="Regra.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrabalhoPratico.rc" />

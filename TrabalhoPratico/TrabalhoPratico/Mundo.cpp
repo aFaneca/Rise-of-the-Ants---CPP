@@ -87,12 +87,12 @@ vector<Comunidade> &Mundo::getComunidades()
 	return this->comunidades;
 }
 
-void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga)
+void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)
 {
 	// PROCURA PELO NINHO (ID)
 	for (int i = 0; i < this->getComunidades().size(); i++) {
 		if (comunidades[i].getId() == idNinho) {
-			comunidades[i].getNinho()->addFormiga(tipoFormiga, *this);
+			comunidades[i].getNinho()->addFormiga(tipoFormiga, *this, posx, posy);
 		}
 	}
 }
@@ -103,7 +103,7 @@ bool Mundo::ocupada(int x, int y)
 {
 	if (this->grelha[x - 1][y - 1] == 'V')
 		return false;
-	
+
 	return true;
 }
 bool Mundo::validaPos(int x, int y, int dx, int dy) {

@@ -2,7 +2,7 @@
 #define NINHO_H
 #pragma once
 
-#include "header.h"
+#include "Processador.h"
 #include "Elementos.h"
 //class Formiga;
 class Ninho : public Elementos
@@ -17,7 +17,7 @@ public:
 	~Ninho();
 	int getId();
 	vector<Formiga>& getFormigas();
-	void addFormiga(char tipo, Mundo & mundo);
+	void addFormiga(char tipo, Mundo & mundo, int posx = -1, int poxy = -1);
 };
 
 #endif

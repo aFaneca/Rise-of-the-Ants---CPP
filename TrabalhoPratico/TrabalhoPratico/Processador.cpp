@@ -1,9 +1,9 @@
-#include "header.h"
+#include "Processador.h"
 #include "Mundo.h"
 #include "Ninho.h"
 #include "Comunidade.h"
 using namespace std;
-vector<string> divideEmPalavras(string str) {
+vector<string> Processador::divideEmPalavras(string str) {
 	istringstream iss(str);
 	vector<string> palavra;
 	while (iss) {
@@ -17,7 +17,7 @@ vector<string> divideEmPalavras(string str) {
 
 
 //VALIDA COMANDOS
-bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida) {
+bool Processador::valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida) {
 	if (palavra[0] == "defmundo") {
 		if (palavra.size() != 2 + 1)
 			cout << "Será que quis dizer \"defmundo <limite>\"?";
@@ -142,7 +142,7 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 				if (posy <= *limite && posx <= *limite && posy > 0 && posx > 0)
 					return true;
 				else {
-					cerr << "Coordenadas invalidas! (Acima do limite definido)";
+					cerr << "Coordenadas invalidas! (Fora do limite definido)";
 				}
 			}
 			catch (const invalid_argument& ia) {
@@ -155,7 +155,8 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 		if (palavra.size() != 4 + 1) {
 			cout << "Será que quis dizer \"criaf <F> <T> <N>\"?";
 		}
-		else if (palavra[2].size() != 1 || palavra[2].compare("E") != 0) {
+		else if (palavra[2].size() != 1 || (palavra[2].compare("E") != 0 && palavra[2].compare("C") != 0 &&
+			palavra[2].compare("V") != 0 && palavra[2].compare("A") != 0 && palavra[2].compare("S") != 0)) {
 			cerr << "Tipo de Formiga inválido.";
 		}
 		else {
@@ -165,6 +166,33 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 			}
 			catch (const invalid_argument& ia) {
 				cerr << "Formato Inválido:  \"criaf <F> <T> <N>\"";
+				return false;
+			}
+		}
+	}
+	else if (palavra[0] == "cria1") { 
+		// cria1 <TIPO> <NINHO> <LINHA> <COLUNA>
+		if (palavra.size() != 5 + 1) {
+			cout << "Será que quis dizer \"criaf <T> <N> <linha> <coluna>\"?";
+		}
+		else if (palavra[1].size() != 1 || (palavra[1].compare("E") != 0 && palavra[1].compare("C") != 0 &&
+			palavra[1].compare("V") != 0 && palavra[1].compare("A") != 0 && palavra[1].compare("S") != 0)) { // VERIFICAR SE O TIPO É CORRETO
+			cerr << "Tipo de Formiga inválido.";
+		}
+		else {
+			try { // VERIFICAR SE <N>, <linha> e <coluna> são números inteiros
+				stoi(palavra[2]);
+				int posy = stoi(palavra[3]);
+				int posx = stoi(palavra[4]);
+
+				if (posy <= *limite && posx <= *limite && posy > 0 && posx > 0)
+					return true;
+				else {
+					cerr << "Coordenadas invalidas! (Fora do limite definido)";
+				}
+
+			}catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"criaf <T> <N> <linha> <coluna>\"";
 				return false;
 			}
 		}
@@ -205,7 +233,7 @@ bool valida(vector<string> palavra, int *limite, double *energiaInicialNinhos, d
 	return false;
 }
 
-string executaFicheiro(string nomeFicheiro, int linha) {
+string Processador::executaFicheiro(string nomeFicheiro, int linha) {
 	ifstream ficheiro;
 	string comando;
 	ficheiro.open(nomeFicheiro);
@@ -223,7 +251,7 @@ string executaFicheiro(string nomeFicheiro, int linha) {
 	return comando; // LEITURA DO FICHEIRO EFETUADA COM SUCESSO
 }
 
-int contaLinhasFicheiro(string nomeFicheiro) {
+int Processador::contaLinhasFicheiro(string nomeFicheiro) {
 	int nrlinhas = 0;
 	string linha;
 	ifstream ficheiro(nomeFicheiro);
@@ -237,8 +265,9 @@ int contaLinhasFicheiro(string nomeFicheiro) {
 	return nrlinhas;
 }
 // PROCESSA COMANDOS LIDOS DE UM FICHEIRO
-bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *defpc, bool *defvt, bool *defmi, bool *defme, bool *defnm, bool *executa, bool *inicio, int *limite,
-	double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo) {
+bool Processador::processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *defpc, bool *defvt, bool *defmi, bool *defme, bool *defnm, bool *executa, bool *inicio, int *limite,
+	double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas, double *energiaInicialMigalhas, 
+		int *maxMigalhas, double *energiaTransferida, Mundo &mundo, Interface &i1) {
 	int linha = 1;
 	string comando;
 	int nrlinhas = contaLinhasFicheiro(nomeFicheiro);
@@ -311,7 +340,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 			}
 		}
 		else if (!comando.compare(0, 6, "ninho ")) {
-			mostraMundo(mundo);
+			i1.mostraMundo(mundo);
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
@@ -325,7 +354,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 			}
 		}
 		else if (!comando.compare(0, 6, "criaf ")) {
-			mostraMundo(mundo);
+			i1.mostraMundo(mundo);
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
@@ -348,12 +377,47 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 				}
 			}
 		}
-		else if (!comando.compare("tempo")) {
+		else if (!comando.compare(0, 6, "cria1 ")) {
+			i1.mostraMundo(mundo);   // cria1 <TIPO> <NINHO> <LINHA> <COLUNA>
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else{
+				bool encontrou = false;
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[2])) {
+							//ADICIONAR FORMIGA AO NINHO
+							if (mundo.ocupada(stoi(palavra[4]), stoi(palavra[3]))) {
+								cerr << "A posicao (" << stoi(palavra[4]) << ", " << stoi(palavra[3]) << ") ja se encontra ocupada.";
+								encontrou = true;
+								break;
+							}
+							else {
+								mundo.addFormiga2Ninho(mundo.getComunidades()[i].getId(), palavra[1].at(0), stoi(palavra[4]), stoi(palavra[3]));
+								encontrou = true;
+							}
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho nao foi encontrado (ID ERRADO?) :: ";
+				}
+			}
+		}
+		else if (!comando.compare(0, 5, "tempo") && palavra.size() < 4) {
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 			else {
-				movimentos(mundo);
+				if (palavra.size() == 3) {
+					for(int i = 0; i < stoi(palavra[1]); i++)
+						i1.movimentos(mundo);
+				}
+				else {
+					i1.movimentos(mundo);
+				}
+				
 			}
 		}
 		else if (!comando.compare(0, 6, "inicio")) {
@@ -367,7 +431,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 			}
 		}
 		else if (!comando.compare(0, 11, "listaninho ")) {
-			mostraMundo(mundo);
+			i1.mostraMundo(mundo);
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
@@ -378,7 +442,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 					for (int i = 0; i < mundo.getComunidades().size(); i++) {
 						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[1])) {
 							// SE EXISTIR
-							listaNinho(stoi(palavra[1]), mundo);
+							i1.listaNinho(stoi(palavra[1]), mundo);
 							encontrou = true;
 						}
 					}
@@ -401,18 +465,18 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 					if (x < 1 || y < 1 || x > *limite || y > *limite) //SE NÃO ULTRAPASSAR OS LIMITES
 						cerr << "Posicao Invalida.";
 					else
-						listaPosicao(y, x, mundo);
+						i1.listaPosicao(y, x, mundo);
 				}
 			}
 		}
 		else if (!comando.compare("listamundo")) {
 			Consola::clrscr();
 			if (*inicio)
-				listaMundo(mundo);
+				i1.listaMundo(mundo);
 			else
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 		}
-		
+
 		else if (!comando.compare("sair")) {
 			Consola::clrscr();
 			//DESTRUIR PONTEIRO PARA NINHO
@@ -431,7 +495,7 @@ bool processaComandos(string nomeFicheiro, bool *defmundo, bool *defen, bool *de
 }
 
 // PROCESSA COMANDOS LIDOS DA LINHA DE COMANDOS
-void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, bool *defmi, bool *defme, bool *defnm, bool *executa, bool *inicio) {
+void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, bool *defmi, bool *defme, bool *defnm, bool *executa, bool *inicio, Interface &i1) {
 	int limite;
 	double energiaInicialNinhos;
 	double valorEnergia;
@@ -446,8 +510,8 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 	while (1) {
 		if (*inicio) {
 			if (mundo.getIniciado()) {
-					mostraMundo(mundo);
-				}
+				i1.mostraMundo(mundo);
+			}
 		}
 		cout << "\n> ";
 		getline(cin, comando);
@@ -459,9 +523,10 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
 					*defmundo = true;
 				}
-			}else {
-					cerr << "A simualcao ja se encontra a decorrer. Não pode fazer alteracoes a este campo!";
-				}
+			}
+			else {
+				cerr << "A simualcao ja se encontra a decorrer. Não pode fazer alteracoes a este campo!";
+			}
 		}
 		else if (!comando.compare(0, 6, "defen ")) {
 			Consola::clrscr();
@@ -513,9 +578,9 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 		}
 		else if (!comando.compare(0, 8, "executa ")) {
 			Consola::clrscr();
-				*executa = true;
-				processaComandos(palavra[1], defmundo, defen, defpc, defvt, defmi, defme, defnm, executa, inicio, &limite,
-					&energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida, mundo);
+			*executa = true;
+			processaComandos(palavra[1], defmundo, defen, defpc, defvt, defmi, defme, defnm, executa, inicio, &limite,
+				&energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida, mundo, i1);
 		}
 		else if (!comando.compare(0, 6, "inicio")) {
 			Consola::clrscr();
@@ -538,7 +603,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 			else {
 				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
-					if (!mundo.ocupada(stoi(palavra[2]), stoi(palavra[1])) ){
+					if (!mundo.ocupada(stoi(palavra[2]), stoi(palavra[1]))) {
 						mundo.addComunidade(stoi(palavra[1]), stoi(palavra[2]));
 					}
 					else
@@ -556,13 +621,13 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 
 					//VERIFICAR SE O NINHO EXISTE
 					for (int i = 0; i < mundo.getComunidades().size(); i++) {
-						if (mundo.getComunidades()[i].getId() == (int) stoi(palavra[3])) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[3])) {
 							//ADICIONAR FORMIGAS AO NINHO
 							for (int j = 0; j < (int)stoi(palavra[1]); j++)
 								mundo.addFormiga2Ninho(mundo.getComunidades()[i].getId(), palavra[2].at(0));
-							
-								//mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
-							//cout << stoi(palavra[3]);
+
+							//mundo.getComunidades()[i].getNinho()->addFormiga(palavra[2].at(0), mundo);
+						//cout << stoi(palavra[3]);
 							encontrou = true;
 						}
 					}
@@ -571,18 +636,55 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 				}
 			}
 		}
-		else if (!comando.compare("tempo")) {
+		else if (!comando.compare(0, 6, "cria1 ")) {
+			i1.mostraMundo(mundo);   // cria1 <TIPO> <NINHO> <LINHA> <COLUNA>
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 			else {
-				movimentos(mundo);
+				bool encontrou = false;
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[2])) {
+							//ADICIONAR FORMIGA AO NINHO
+							if (mundo.ocupada(stoi(palavra[4]), stoi(palavra[3]))) {
+								cerr << "A posicao (" << stoi(palavra[4]) << ", " << stoi(palavra[3]) << ") ja se encontra ocupada.";
+								encontrou = true;
+								break;
+							}
+							else {
+								mundo.addFormiga2Ninho(mundo.getComunidades()[i].getId(), palavra[1].at(0), stoi(palavra[4]), stoi(palavra[3]));
+								encontrou = true;
+							}
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho nao foi encontrado (ID ERRADO?) :: ";
+				}
 			}
 		}
+		else if (!comando.compare(0, 5, "tempo") && palavra.size() < 4) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				
+				if (palavra.size() == 3) {
+					for (int i = 0; i < stoi(palavra[1]); i++)
+						i1.movimentos(mundo);
+				}
+				else {
+					i1.movimentos(mundo);
+				}
+				
+			}
+		}
+	
 		else if (!comando.compare("listamundo")) {
 			Consola::clrscr();
 			if(*inicio)
-				listaMundo(mundo);
+				i1.listaMundo(mundo);
 			else
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 		}
@@ -597,7 +699,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 					for (int i = 0; i < mundo.getComunidades().size(); i++) {
 						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[1])) {
 							// SE EXISTIR
-							listaNinho(stoi(palavra[1]), mundo);
+							i1.listaNinho(stoi(palavra[1]), mundo);
 							encontrou = true;
 						}
 					}
@@ -620,7 +722,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 					if (x < 1 || y < 1 || x > limite || y > limite) //SE NÃO ULTRAPASSAR OS LIMITES
 						cerr << "Posicao Invalida.";
 					else
-						listaPosicao(y, x, mundo);
+						i1.listaPosicao(y, x, mundo);
 				}
 			}
 		}
@@ -632,7 +734,7 @@ void processaComandos(bool *defmundo, bool *defen, bool *defpc, bool *defvt, boo
 	}
 }
 
-void iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas,
+void Processador::iniciaSimul(int *limite, double *energiaInicialNinhos, double *valorEnergia, int *posComMigalhas,
 	double *energiaInicialMigalhas, int *maxMigalhas, double *energiaTransferida, Mundo &mundo) {
 	mundo.Init(*limite, *energiaInicialNinhos, *valorEnergia, *posComMigalhas, *energiaInicialMigalhas, *maxMigalhas, *energiaTransferida);
 }

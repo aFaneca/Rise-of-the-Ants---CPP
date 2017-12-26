@@ -1,7 +1,7 @@
 #ifndef MUNDO_H
 #define MUNDO_H
 #pragma once
-#include "header.h"
+#include "Processador.h"
 #include "Elementos.h"
 //class Comunidade;
 class Mundo : public Elementos
@@ -36,7 +36,7 @@ public:
 	void setEnergiaTransferida(double v);
 	void addComunidade(int posy, int posx);
 	vector<Comunidade> & getComunidades();
-	void addFormiga2Ninho(int idNinho, char tipoFormiga);
+	void addFormiga2Ninho(int idNinho, char tipoFormiga, int posx = -1, int posy = -1);
 	bool ocupada(int x, int y);
 	bool validaPos(int x, int y, int dx, int dy);
 	void addGrelha(int x, int y, char avatar);

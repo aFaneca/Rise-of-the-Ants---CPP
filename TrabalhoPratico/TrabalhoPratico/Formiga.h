@@ -1,7 +1,7 @@
 #ifndef FORMIGA_H
 #define FORMIGA_H
 #pragma once
-#include "header.h"
+#include "Processador.h"
 #include "Elementos.h"
 class Formiga : public Elementos
 {
@@ -12,7 +12,6 @@ private:
 	
 
 public:
-
 	Formiga(char tipo, int posx, int posy);
 	~Formiga();
 	char getTipo();
@@ -22,6 +21,7 @@ public:
 	int getId();
 	int getEnergia();
 	void suicidio();
+	void atualizaEnergia(char tipo, int novaPosX, int novaPosy);
 };
 
 #endif

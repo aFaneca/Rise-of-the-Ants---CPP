@@ -1,4 +1,4 @@
-﻿#include "header.h"
+﻿#include "Interface.h"
 #include "Comunidade.h"
 #include "Mundo.h"
 #include "Ninho.h"
@@ -16,8 +16,8 @@ struct desenhos {
 	char ident3 = 248;			// PARA IDENTAÇÃO DAS LISTAGENS
 } desenho;
 
-int main() {
-	//setlocale(LC_ALL, "Portuguese"); <- causa bug com os caractéres ascii
+
+void Interface::run() {
 	string sOpt;
 	int opt;
 	srand(time(NULL));
@@ -53,29 +53,36 @@ int main() {
 
 	Consola::getch();
 }
+int main() {
+	//setlocale(LC_ALL, "Portuguese"); <- causa bug com os caractéres ascii
+	Interface i;
+	i.run();
 
-void mostraMenu() {
+	return 0;
+}
+
+void Interface::mostraMenu() {
 	Consola::clrscr();
 	cout << (char)205 << (char)205 << " Menu " << (char)205 << (char)205 << endl;
 	cout << "[1] NOVO JOGO\n[2] CONTINUAR JOGO\n[3] SAIR" << endl;
 	cout << "> ";
 }
 
-void novoJogo() {
+void Interface::novoJogo() {
 	bool defmundo = false, defen = false, defpc = false, defvt = true, defmi = false, defme = false, defnm = false, executa = false, inicio = false;
 	Consola::setScreenSize(50, 80);
 	Consola::setBackgroundColor(Consola::PRETO);
 	Consola::setTextColor(Consola::VERDE);
 	Consola::clrscr();
 	cout << "Novo Jogo...";
-	processaComandos(&defmundo, &defen, &defpc, &defvt, &defmi, &defme, &defnm, &executa, &inicio);
+	p1->processaComandos(&defmundo, &defen, &defpc, &defvt, &defmi, &defme, &defnm, &executa, &inicio, *this);
 }
 
-void sair() {
+void Interface::sair() {
 	exit(0);
 }
 
-void listaNinho(int id, Mundo &mundo) {
+void Interface::listaNinho(int id, Mundo &mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
 	cout << "## INFO DO NINHO " << id << " (" << mundo.getComunidades()[id - 1].getNinho()->posx << ", " << mundo.getComunidades()[id - 1].getNinho()->posy << ") ##" << endl;
 	cout << "-> Comunidade " << mundo.getComunidades()[id - 1].getId() << endl;
@@ -89,7 +96,7 @@ void listaNinho(int id, Mundo &mundo) {
 	}
 }
 
-void listaMundo(Mundo & mundo) {
+void Interface::listaMundo(Mundo & mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
 	cout << "## INFO DO MUNDO ##" << endl;
 	cout << "Comunidades ( TOTAL: " << mundo.getComunidades().size() << ")" << endl;
@@ -108,7 +115,7 @@ void listaMundo(Mundo & mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 1);
 }
 
-void listaPosicao(int x, int y, Mundo & mundo) {
+void Interface::listaPosicao(int x, int y, Mundo & mundo) {
 	int total = 0;
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
 	cout << "## INFO DA POSICAO (" << x << ", " << y << ") ##" << endl;
@@ -131,9 +138,7 @@ void listaPosicao(int x, int y, Mundo & mundo) {
 	cout << "\t" << desenho.ident2 << " TOTAL: " << total;
 }
 
-
-
-void movimentos(Mundo & mundo) {
+void Interface::movimentos(Mundo & mundo) {
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
 		// VERIFICA NINHOS
 		for (int j = 0; j < mundo.getComunidades()[i].getNinho()->getFormigas().size(); j++) {
@@ -148,7 +153,7 @@ void movimentos(Mundo & mundo) {
 	}
 }
 
-void mostraMundo(Mundo & mundo)
+void Interface::mostraMundo(Mundo & mundo)
 {
 	int posx, posy;
 	char avatar;
@@ -215,12 +220,12 @@ void mostraMundo(Mundo & mundo)
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 1);
 }
 
-void info(Mundo & mundo)
+void Interface::info(Mundo & mundo)
 {
 	cout << mundo.toString();
 }
 
-void continuarJogo() {
+void Interface::continuarJogo() {
 	Consola::clrscr();
 	cout << "Continua jogo...";
 }
