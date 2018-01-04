@@ -16,6 +16,8 @@ public:
 	Ninho* getNinho();
 	int getId();
 	void destruir();
+	int encontraFormiga(int x, int y);
+	void addEnergia2Formiga(int idFormiga, int valor);
 };
 
 #endif

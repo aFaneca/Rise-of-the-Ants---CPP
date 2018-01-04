@@ -18,6 +18,7 @@ public:
 	int getId();
 	vector<Formiga>& getFormigas();
 	void addFormiga(char tipo, Mundo & mundo, int posx = -1, int poxy = -1);
+	void addEnergia(int valor);
 };
 
 #endif

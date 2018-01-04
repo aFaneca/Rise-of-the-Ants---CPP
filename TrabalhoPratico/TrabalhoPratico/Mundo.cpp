@@ -97,6 +97,40 @@ void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)
 	}
 }
 
+void Mundo::addEnergia2Ninho(int idNinho, int energ)
+{
+	// PROCURA PELO NINHO (ID)
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+		if (comunidades[i].getId() == idNinho) {
+			comunidades[i].getNinho()->addEnergia(energ);
+		}
+	}
+
+}
+
+bool Mundo::temFormiga(int x, int y)
+{
+	if (this->grelha[x - 1][y - 1] == 'E' || this->grelha[x - 1][y - 1] == 'A' || this->grelha[x - 1][y - 1] == 'V' || 
+		this->grelha[x - 1][y - 1] == 'C' || this->grelha[x - 1][y - 1] == 'S')
+		return true;
+
+	return false;
+}
+
+void Mundo::addEnergia2Formiga(int x, int y, int energia)
+{
+	int idFormiga;
+	// PROCURA A FORMIGA QUE ESTÁ NESSA POSIÇÃO
+	for (int i = 0; i < comunidades.size(); i++) {
+		idFormiga = comunidades[i].encontraFormiga(x, y);
+		if (idFormiga != -1) { // SE UMA FORMIGA FOR ENCONTRADA NESSA POSIÇÃO
+			comunidades[i].addEnergia2Formiga(idFormiga, energia);
+
+			return;
+		}
+
+	}
+}
 
 
 bool Mundo::ocupada(int x, int y)
@@ -127,3 +161,5 @@ vector<vector<char>> Mundo::getGrelha()
 {
 	return grelha;
 }
+
+

@@ -85,7 +85,7 @@ void Interface::sair() {
 void Interface::listaNinho(int id, Mundo &mundo) {
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
 	cout << "## INFO DO NINHO " << id << " (" << mundo.getComunidades()[id - 1].getNinho()->posx << ", " << mundo.getComunidades()[id - 1].getNinho()->posy << ") ##" << endl;
-	cout << "-> Comunidade " << mundo.getComunidades()[id - 1].getId() << endl;
+	cout << "-> Comunidade " << mundo.getComunidades()[id - 1].getId() << " (Energia: " << mundo.getComunidades()[id - 1].getNinho()->energia << ")" << endl;
 	cout << "\t " << (char)desenho.ident1 << " Formigas: (TOTAL: " << mundo.getComunidades()[id - 1].getNinho()->getFormigas().size() << " )" << endl;
 	for (int j = 0; j < mundo.getComunidades()[id - 1].getNinho()->getFormigas().size(); j++) {
 		cout << "\t\t" << (char)desenho.ident2 << " Formiga " << mundo.getComunidades()[id - 1].getNinho()->getFormigas()[j].getId() << endl;

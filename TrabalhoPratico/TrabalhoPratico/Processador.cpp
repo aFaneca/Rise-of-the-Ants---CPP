@@ -227,6 +227,39 @@ bool Processador::valida(vector<string> palavra, int *limite, double *energiaIni
 			}
 		}
 	}
+	else if (palavra[0] == "energformiga") {
+		if (palavra.size() != 4 + 1) {
+			cout << "Será que quis dizer \"energformiga <linha> <coluna> <E>\"?";
+		}
+		else {
+			try {
+				stoi(palavra[2]);
+				stoi(palavra[1]);
+				stoi(palavra[3]);
+				return true;
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"energformiga <linha> <coluna> <E>\"";
+				return false;
+			}
+		}
+	}
+	else if (palavra[0] == "energninho") {
+		if (palavra.size() != 3 + 1) {
+			cout << "Será que quis dizer \"energninho <N> <E>\"?";
+		}
+		else {
+			try {
+				stoi(palavra[1]);
+				stoi(palavra[2]);
+				return true;
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"energninho <N> <E>\"";
+				return false;
+			}
+		}
+	}
 	else {
 		cout << "Comando não reconhecido...";
 	}
@@ -476,7 +509,56 @@ bool Processador::processaComandos(string nomeFicheiro, bool *defmundo, bool *de
 			else
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 		}
+		else if (!comando.compare(0, 11, "energninho ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[1])) {
+							//ADICIONAR ENERGIA AO NINHO
+							mundo.addEnergia2Ninho(mundo.getComunidades()[i].getId(), stoi(palavra[2]));
+							encontrou = true;
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
 
+				}
+
+			}
+		}
+		else if (!comando.compare(0, 13, "energformiga ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					//VERIFICAR SE EXISTE ALGUMA FORMIGA NA POSIÇÃO
+					int posx = stoi(palavra[2]);
+					int posy = stoi(palavra[1]);
+					int valorEnergia = stoi(palavra[3]);
+
+
+					if (posx < 1 || posy < 1 || posx > *limite || posy > *limite) //SE NÃO ULTRAPASSAR OS LIMITES
+						cerr << "Posicao Invalida.";
+					else {
+						if (mundo.temFormiga(posx, posy))
+							mundo.addEnergia2Formiga(posx, posy, valorEnergia);
+						else
+							cerr << "Nenhuma formiga foi encontrada na posicao (" << posx << ", " << posy << ")";
+					}
+
+
+
+				}
+
+			}
+		}
 		else if (!comando.compare("sair")) {
 			Consola::clrscr();
 			//DESTRUIR PONTEIRO PARA NINHO
@@ -680,7 +762,6 @@ void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, boo
 				
 			}
 		}
-	
 		else if (!comando.compare("listamundo")) {
 			Consola::clrscr();
 			if(*inicio)
@@ -724,6 +805,56 @@ void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, boo
 					else
 						i1.listaPosicao(y, x, mundo);
 				}
+			}
+		}
+		else if (!comando.compare(0, 11, "energninho ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//VERIFICAR SE O NINHO EXISTE
+					for (int i = 0; i < mundo.getComunidades().size(); i++) {
+						if (mundo.getComunidades()[i].getId() == (int)stoi(palavra[1])) {
+							//ADICIONAR ENERGIA AO NINHO
+							mundo.addEnergia2Ninho(mundo.getComunidades()[i].getId(), stoi(palavra[2]));
+							encontrou = true;
+						}
+					}
+					if (encontrou == false)
+						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
+	
+				}
+				
+			}
+		}
+		else if (!comando.compare(0, 13, "energformiga ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				bool encontrou = false;
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//VERIFICAR SE EXISTE ALGUMA FORMIGA NA POSIÇÃO
+					int posx = stoi(palavra[2]);
+					int posy = stoi(palavra[1]);
+					int valorEnergia = stoi(palavra[3]);
+					
+					
+					if (posx < 1 || posy < 1 || posx > limite || posy > limite) //SE NÃO ULTRAPASSAR OS LIMITES
+						cerr << "Posicao Invalida.";
+					else {
+						if (mundo.temFormiga(posx, posy))
+							mundo.addEnergia2Formiga(posx, posy, valorEnergia);
+						else
+							cerr << "Nenhuma formiga foi encontrada na posicao (" << posx << ", " << posy << ")";
+					}
+					
+					
+
+				}
+
 			}
 		}
 		else {

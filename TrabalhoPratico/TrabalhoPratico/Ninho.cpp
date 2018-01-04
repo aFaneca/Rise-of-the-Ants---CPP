@@ -47,3 +47,8 @@ void Ninho::addFormiga(char tipo, Mundo & mundo, int posx, int posy)
 	formigas.push_back(f);
 	mundo.addGrelha(px, py, f.avatar);
 }
+
+void Ninho::addEnergia(int valor)
+{
+	this->energia += valor;
+}

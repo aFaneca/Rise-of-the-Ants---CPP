@@ -41,6 +41,9 @@ public:
 	bool validaPos(int x, int y, int dx, int dy);
 	void addGrelha(int x, int y, char avatar);
 	vector<vector<char>> getGrelha();
+	void addEnergia2Ninho(int idNinho, int energ);
+	bool temFormiga(int x, int y);
+	void addEnergia2Formiga(int x, int y, int energia);
 };
 
 #endif
