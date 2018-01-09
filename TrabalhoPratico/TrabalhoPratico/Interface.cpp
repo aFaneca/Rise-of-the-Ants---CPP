@@ -165,19 +165,7 @@ void Interface::listaPosicao(int x, int y, Mundo & mundo) {
 void Interface::movimentos(Mundo & mundo) {
 	mundo.geraMaisMigalhas();
 	mundo.iteracao();
-	for (int i = 0; i < mundo.getComunidades().size(); i++) {
-		// VERIFICA NINHOS
-		for (int j = 0; j < mundo.getComunidades()[i]->getNinho()->getFormigas().size(); j++) {
-			// VERIFICA AS FORMIGAS DE CADA NINHO
-			mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->mover(mundo.getLimite(), mundo);
-			if (mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
-				//mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->suicidio();
-				delete mundo.getComunidades()[j]->getNinho()->getFormigas()[j];
-				mundo.getComunidades()[i]->getNinho()->getFormigas().erase(mundo.getComunidades()[i]->getNinho()->getFormigas().begin() + j);
-				j--;
-			}
-		}
-	}
+	
 }
 
 void Interface::mostraMundo(Mundo & mundo)

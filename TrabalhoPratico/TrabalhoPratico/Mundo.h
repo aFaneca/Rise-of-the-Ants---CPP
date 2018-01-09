@@ -52,6 +52,9 @@ public:
 	void gerarMigalhas(int quanatidade = -1);
 	void geraMaisMigalhas();
 	void iteracao();
+	void iteraFormigas();
+	void iteraNinhos();
+	void iteraMigalhas();
 };
 
 #endif

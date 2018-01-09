@@ -3,12 +3,13 @@
 #include "Formiga.h"
 int Ninho::i = 1;
 
-Ninho::Ninho(int posx, int posy)
+Ninho::Ninho(int posx, int posy, int energiaInicial)
 {
 	this->id = i++;
 	this->avatar = 178;
 	this->posx = posx;
 	this->posy = posy;
+	energia = energiaInicial;
 }
 
 Ninho::~Ninho()

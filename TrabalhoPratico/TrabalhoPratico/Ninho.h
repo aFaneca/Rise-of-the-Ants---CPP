@@ -13,7 +13,7 @@ private:
 	int id;
 	char tipo;
 public:
-	Ninho(int posx, int posy);
+	Ninho(int posx, int posy, int energiaInicial);
 	~Ninho();
 	int getId();
 	vector<Formiga *> getFormigas();

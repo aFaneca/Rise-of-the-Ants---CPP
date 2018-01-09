@@ -2,10 +2,10 @@
 
 #include "Formiga.h"
 
-Comunidade::Comunidade(int posx, int posy) 
+Comunidade::Comunidade(int posx, int posy, int energiaInicial) 
 {
 	cout << "Nova comunidade adicionada!";
-	ninho = new Ninho(posx, posy);
+	ninho = new Ninho(posx, posy, energiaInicial);
 	this->id = (ninho)->getId();
 	cout << "ID: " << this->id;
 }

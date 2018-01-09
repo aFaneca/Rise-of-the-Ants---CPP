@@ -1,6 +1,8 @@
 #include "Mundo.h"
 #include "Comunidade.h"
 #include "Migalha.h"
+#include "Ninho.h"
+#include "Formiga.h"
 using namespace std;
 
 
@@ -87,7 +89,7 @@ void Mundo::setEnergiaTransferida(double v)
 void Mundo::addComunidade(int posy, int posx)
 {
 	//Comunidade c = new Comunidade(posx, posy);
-	comunidades.push_back(new Comunidade(posx, posy));
+	comunidades.push_back(new Comunidade(posx, posy, energiaInicialNinhos));
 }
 
 vector<Comunidade*> Mundo::getComunidades()
@@ -142,7 +144,34 @@ void Mundo::geraMaisMigalhas()
 
 void Mundo::iteracao()
 {
+	iteraFormigas();
+	iteraNinhos();
+	iteraMigalhas();
+	
+	
+}
 
+void Mundo::iteraFormigas() {
+	for (int i = 0; i < comunidades.size(); i++) {
+		// VERIFICA NINHOS
+		for (int j = 0; j < comunidades[i]->getNinho()->getFormigas().size(); j++) {
+			// VERIFICA AS FORMIGAS DE CADA NINHO
+			comunidades[i]->getNinho()->getFormigas()[j]->mover(limite, *this);
+			if (comunidades[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
+				int posx = comunidades[i]->getNinho()->getFormigas()[j]->posx;
+				int posy = comunidades[i]->getNinho()->getFormigas()[j]->posy;
+				mataFormiga(posx, posy);
+				j--;
+			}
+		}
+	}
+}
+
+void Mundo::iteraNinhos() {
+	
+}
+
+void Mundo::iteraMigalhas() {
 	// ORDENA AÇÃO DAS MIGALHAS EM CADA ITERAÇÃO
 	for (int i = 0; i < migalhas.size(); i++) {
 		migalhas[i]->iteracao();
@@ -150,9 +179,8 @@ void Mundo::iteracao()
 			delete migalhas[i];
 			if (!migalhas.empty())
 				migalhas.erase(migalhas.begin() + i);
-		}		
+		}
 	}
-		
 }
 
 void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)
@@ -230,8 +258,14 @@ void Mundo::mataFormiga(int posx, int posy)
 
 bool Mundo::ocupada(int x, int y)
 {
-	if (this->grelha[x - 1][y - 1] == 'V')
+	try {
+		if (this->grelha[x - 1][y - 1] == 'V')
+			return false;
+	}
+	catch (const std::out_of_range& e) {
 		return false;
+	}
+	
 
 	return true;
 }

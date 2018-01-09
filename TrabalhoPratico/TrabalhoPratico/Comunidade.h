@@ -11,7 +11,7 @@ private:
 	Ninho *ninho;
 	int id;
 public:
-	Comunidade(int posx, int posy);
+	Comunidade(int posx, int posy, int energiaInicial);
 	~Comunidade();
 	Ninho* getNinho();
 	int getId();
