@@ -16,6 +16,7 @@ private:
 	int maxMigalhas;
 	double energiaTransferida;
 	vector<Comunidade *> comunidades;
+	vector<Migalha *> migalhas;
 	bool iniciado;
 	
 
@@ -45,6 +46,10 @@ public:
 	bool temFormiga(int x, int y);
 	void addEnergia2Formiga(int x, int y, int energia);
 	void eliminaNinho(int idNinho);
+	void mataFormiga(int posx, int posy);
+	vector<Migalha *> getMigalhas();
+	void addMigalha(int posx, int posy);
+	void gerarMigalhas();
 };
 
 #endif

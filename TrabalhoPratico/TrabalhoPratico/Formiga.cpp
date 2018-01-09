@@ -43,6 +43,7 @@ Formiga::Formiga(char tipo, int posx, int posy)
 
 Formiga::~Formiga()
 {
+	//delete this;
 }
 
 char Formiga::getTipo()

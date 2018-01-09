@@ -29,14 +29,14 @@ int Comunidade::getId()
 
 void Comunidade::destruir()
 {
-	delete this;
+	//delete this;
 }
 
 int Comunidade::encontraFormiga(int x, int y)
 {
 	for (int i = 0; i < ninho->getFormigas().size(); i++) {
-		if (ninho->getFormigas()[i].posx == x && ninho->getFormigas()[i].posy == y)
-			return ninho->getFormigas()[i].getId();
+		if (ninho->getFormigas()[i]->posx == x && ninho->getFormigas()[i]->posy == y)
+			return ninho->getFormigas()[i]->getId();
 	}
 
 	return -1; // NÃO ENCONTROU QUALQUER FORMIGA DESTA COMUNIDADE NA POSIÇÃO (X,Y)
@@ -45,7 +45,9 @@ int Comunidade::encontraFormiga(int x, int y)
 void Comunidade::addEnergia2Formiga(int idFormiga, int valor)
 {
 	for (int i = 0; i < ninho->getFormigas().size(); i++) {
-		if (ninho->getFormigas()[i].getId() == idFormiga)
-			ninho->getFormigas()[i].energia += valor;
+		if (ninho->getFormigas()[i]->getId() == idFormiga)
+			ninho->getFormigas()[i]->energia += valor;
 	}
 }
+
+

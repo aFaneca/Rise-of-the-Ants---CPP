@@ -2,8 +2,7 @@ defmundo 13
 defen 12
 defpc 23
 defvt 5
-defmi 99
+defmi 10
 defme 999
 defnm 800
 inicio
-ninho 4 5

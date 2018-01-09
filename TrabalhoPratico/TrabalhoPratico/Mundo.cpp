@@ -1,5 +1,6 @@
 #include "Mundo.h"
 #include "Comunidade.h"
+#include "Migalha.h"
 using namespace std;
 
 
@@ -19,8 +20,15 @@ void Mundo::Init(int limite, double energiaInicialNinhos, double valorEnergia, i
 	this->valorEnergia = valorEnergia;
 	iniciado = true;
 	grelha.resize(limite);
-	for (int i = 0; i < limite; i++)
+	for (int i = 0; i < limite; i++) 
 		grelha[i].resize(limite);
+	
+	// POPULAR MUNDO
+	for (int i = 0; i < getLimite(); i++) 
+		for (int j = 0; j < getLimite(); j++) 
+			grelha[i][j] = 'V';
+
+	gerarMigalhas();
 }
 
 Mundo::~Mundo()
@@ -87,6 +95,39 @@ vector<Comunidade*> Mundo::getComunidades()
 	return this->comunidades;
 }
 
+vector<Migalha*> Mundo::getMigalhas()
+{
+	return this->migalhas;
+}
+
+void Mundo::addMigalha(int posx, int posy)
+{
+	Migalha *m = new Migalha(posx, posy, (int)this->energiaInicialMigalhas);
+	migalhas.reserve(migalhas.size() + 1);
+	migalhas.push_back(m);
+	addGrelha(posx, posy, m->avatar);
+}
+
+void Mundo::gerarMigalhas()
+{
+	int px, py;
+	int max = limite - 1;
+	int min = 1;
+	int nMigalhas = (limite * limite) * (posComMigalhas / 100.00);
+
+	//ATRIBUIR POSICAO ALEATORIA E VERIFICAR SE ESTA OCUPADA - REPETIR ATE FALSE
+	for (int i = 0; i < nMigalhas; i++) {
+		do {
+			px = rand() % (max - min + 1) + min;
+			py = rand() % (max - min + 1) + min;
+		} while (ocupada(px, py));
+
+		addMigalha(px, py);
+	}
+	
+
+}
+
 void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)
 {
 	// PROCURA PELO NINHO (ID)
@@ -138,10 +179,26 @@ void Mundo::eliminaNinho(int idNinho)
 	for (int i = 0; i < this->getComunidades().size(); i++) {
 		if (comunidades[i]->getId() == idNinho) {
 			delete comunidades[i];
-			comunidades.erase(comunidades.begin() + i);
+			if (!comunidades.empty())
+				comunidades.erase(comunidades.begin() + i);
 		}
 	}
 }
+
+void Mundo::mataFormiga(int posx, int posy)
+{
+	int idFormiga;
+	// PROCURA A FORMIGA QUE ESTÁ NESSA POSIÇÃO
+	for (int i = 0; i < comunidades.size(); i++) {
+		idFormiga = comunidades[i]->encontraFormiga(posx, posy);
+		if (idFormiga != -1) { // SE UMA FORMIGA FOR ENCONTRADA NESSA POSIÇÃO
+			comunidades[i]->getNinho()->mataFormiga(idFormiga);
+
+			return;
+		}
+	}
+}
+
 
 
 bool Mundo::ocupada(int x, int y)

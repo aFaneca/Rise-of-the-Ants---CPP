@@ -5,8 +5,8 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V1.6
-* Data: 09/01/2018 00:50
+* Versão: V1.7
+* Data: 09/01/2018 04:10
 /***************************************************************/
 
 #include <sstream>
@@ -25,6 +25,7 @@ class Formiga;
 class Elementos;
 class Comunidade;
 class Ninho;
+class Migalha;
 using namespace std;
 
 class Processador

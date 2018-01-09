@@ -173,7 +173,7 @@ bool Processador::valida(vector<string> palavra, int *limite, double *energiaIni
 	else if (palavra[0] == "cria1") { 
 		// cria1 <TIPO> <NINHO> <LINHA> <COLUNA>
 		if (palavra.size() != 5 + 1) {
-			cout << "Será que quis dizer \"criaf <T> <N> <linha> <coluna>\"?";
+			cout << "Será que quis dizer \"cria1 <T> <N> <linha> <coluna>\"?";
 		}
 		else if (palavra[1].size() != 1 || (palavra[1].compare("E") != 0 && palavra[1].compare("C") != 0 &&
 			palavra[1].compare("V") != 0 && palavra[1].compare("A") != 0 && palavra[1].compare("S") != 0)) { // VERIFICAR SE O TIPO É CORRETO
@@ -192,7 +192,7 @@ bool Processador::valida(vector<string> palavra, int *limite, double *energiaIni
 				}
 
 			}catch (const invalid_argument& ia) {
-				cerr << "Formato Inválido:  \"criaf <T> <N> <linha> <coluna>\"";
+				cerr << "Formato Inválido:  \"cria1 <T> <N> <linha> <coluna>\"";
 				return false;
 			}
 		}
@@ -274,6 +274,44 @@ bool Processador::valida(vector<string> palavra, int *limite, double *energiaIni
 				return false;
 			}
 		}
+	}
+	else if (palavra[0] == "mata") {
+		if (palavra.size() != 3 + 1) {
+			cout << "Será que quis dizer \"mata <linha> <coluna>\"?";
+		}
+		else {
+			try {
+				stoi(palavra[2]);
+				stoi(palavra[1]);
+				return true;
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"mata <linha> <coluna>\"";
+				return false;
+			}
+		}
+	}
+	else if (palavra[0] == "migalha") {
+		if (palavra.size() != 3 + 1) {
+			cout << "Será que quis dizer \"migalha <linha> <coluna>\"?";
+		}
+		else {
+			try { // VERIFICAR SE <N>, <linha> e <coluna> são números inteiros
+				int posx = stoi(palavra[2]);
+				int posy = stoi(palavra[1]);
+
+				if (posy <= *limite && posx <= *limite && posy > 0 && posx > 0)
+					return true;
+				else {
+					cerr << "Coordenadas invalidas! (Fora do limite definido)";
+				}
+			}
+			catch (const invalid_argument& ia) {
+				cerr << "Formato Inválido:  \"migalha <linha> <coluna>\"";
+				return false;
+			}
+		}
+		
 	}
 	else {
 		cout << "Comando não reconhecido...";
@@ -704,6 +742,7 @@ void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, boo
 			if (*defmundo = *defen = *defpc = *defvt = *defmi = *defme = *defnm == true) {
 				// INICIAR
 				*inicio = true;
+				i1.mostraMundo(mundo);
 				iniciaSimul(&limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida, mundo);
 			}
 			else {
@@ -805,6 +844,7 @@ void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, boo
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
 		}
 		else if (!comando.compare(0, 11, "listaninho ")) {
+			
 			Consola::clrscr();
 			if (*inicio != true)
 				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
@@ -838,7 +878,7 @@ void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, boo
 					if (x < 1 || y < 1 || x > limite || y > limite) //SE NÃO ULTRAPASSAR OS LIMITES
 						cerr << "Posicao Invalida.";
 					else
-						i1.listaPosicao(y, x, mundo);
+						i1.listaPosicao(x, y, mundo);
 				}
 			}
 		}
@@ -910,6 +950,47 @@ void Processador::processaComandos(bool *defmundo, bool *defen, bool *defpc, boo
 					if (encontrou == false)
 						cerr << "O Ninho não foi encontrado (ID ERRADO?)";
 				}
+			}
+		}
+		else if (!comando.compare(0, 5, "mata ")) {
+			bool encontrou = false;
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					// VERIFICAR SE A POSICAO TEM FORMIGA
+					int posx = stoi(palavra[2]);
+					int posy = stoi(palavra[1]);
+
+					if (posx < 1 || posy < 1 || posx > limite || posy > limite) //SE NÃO ULTRAPASSAR OS LIMITES
+						cerr << "Posicao Invalida.";
+					else {
+						if (mundo.temFormiga(posx, posy))
+							mundo.mataFormiga(posx, posy);
+						else
+							cerr << "Nenhuma formiga foi encontrada em (" << posx << ", " << posy << ").";
+					}
+						
+				}
+			}
+		}
+		else if (!comando.compare(0, 8, "migalha ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, &limite, &energiaInicialNinhos, &valorEnergia, &posComMigalhas, &energiaInicialMigalhas, &maxMigalhas, &energiaTransferida)) {
+					//VERIFICAR SE A POSICAO ESTÁ LIVRE
+					int posx = stoi(palavra[2]);
+					int posy = stoi(palavra[1]);
+
+					if (!mundo.ocupada(posx, posy))
+						mundo.addMigalha(posx, posy);
+					else
+						cerr << "A posicao (" << posx << ", " << posy << ") ja se encontra ocupada.";
+				}
+
 			}
 		}
 		else {

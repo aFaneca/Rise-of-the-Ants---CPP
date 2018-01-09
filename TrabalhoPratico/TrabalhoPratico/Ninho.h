@@ -8,7 +8,7 @@
 class Ninho : public Elementos
 {
 private:
-	vector<Formiga> formigas;
+	vector<Formiga *> formigas;
 	static int i;
 	int id;
 	char tipo;
@@ -16,9 +16,10 @@ public:
 	Ninho(int posx, int posy);
 	~Ninho();
 	int getId();
-	vector<Formiga>& getFormigas();
+	vector<Formiga *> getFormigas();
 	void addFormiga(char tipo, Mundo & mundo, int posx = -1, int poxy = -1);
 	void addEnergia(int valor);
+	void mataFormiga(int idFormiga);
 };
 
 #endif

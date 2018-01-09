@@ -115,6 +115,7 @@
     <ClCompile Include="Comunidade.cpp" />
     <ClCompile Include="Elementos.cpp" />
     <ClCompile Include="Formiga.cpp" />
+    <ClCompile Include="Migalha.cpp" />
     <ClCompile Include="Mundo.cpp" />
     <ClCompile Include="Ninho.cpp" />
     <ClCompile Include="Processador.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="Consola.h" />
     <ClInclude Include="Elementos.h" />
     <ClInclude Include="Formiga.h" />
+    <ClInclude Include="Migalha.h" />
     <ClInclude Include="Processador.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Mundo.h" />

@@ -18,6 +18,7 @@ public:
 	void destruir();
 	int encontraFormiga(int x, int y);
 	void addEnergia2Formiga(int idFormiga, int valor);
+	void mataFormiga(int idFormiga);
 };
 
 #endif

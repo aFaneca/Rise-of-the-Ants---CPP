@@ -13,6 +13,8 @@ Ninho::Ninho(int posx, int posy)
 
 Ninho::~Ninho()
 {
+	formigas.clear();
+	delete this;
 }
 
 int Ninho::getId()
@@ -20,7 +22,7 @@ int Ninho::getId()
 	return this->id;
 }
 
-vector<Formiga> & Ninho::getFormigas()
+vector<Formiga *> Ninho::getFormigas()
 {
 	return this->formigas;
 }
@@ -42,13 +44,25 @@ void Ninho::addFormiga(char tipo, Mundo & mundo, int posx, int posy)
 		px = posx;
 		py = posy;
 	}
-	Formiga f(tipo, px, py);
+	Formiga *f = new Formiga(tipo, px, py);
 	formigas.reserve(formigas.size() + 1);
 	formigas.push_back(f);
-	mundo.addGrelha(px, py, f.avatar);
+	mundo.addGrelha(px, py, f->avatar);
 }
 
 void Ninho::addEnergia(int valor)
 {
 	this->energia += valor;
+}
+
+void Ninho::mataFormiga(int idFormiga)
+{
+	// PROCURA PELA FORMIGA (ID)
+	for (int i = 0; i < getFormigas().size(); i++) {
+		if (formigas[i]->getId() == idFormiga) {
+			delete formigas[i];
+			if (!formigas.empty())
+				formigas.erase(formigas.begin() + i);
+		}
+	}
 }
