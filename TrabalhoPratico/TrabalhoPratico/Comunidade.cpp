@@ -29,7 +29,7 @@ int Comunidade::getId()
 
 void Comunidade::destruir()
 {
-	delete ninho;
+	delete this;
 }
 
 int Comunidade::encontraFormiga(int x, int y)

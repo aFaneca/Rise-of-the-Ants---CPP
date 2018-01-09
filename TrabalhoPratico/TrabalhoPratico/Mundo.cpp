@@ -78,11 +78,11 @@ void Mundo::setEnergiaTransferida(double v)
 
 void Mundo::addComunidade(int posy, int posx)
 {
-	Comunidade c(posx, posy);
-	comunidades.push_back(c);
+	//Comunidade c = new Comunidade(posx, posy);
+	comunidades.push_back(new Comunidade(posx, posy));
 }
 
-vector<Comunidade> &Mundo::getComunidades()
+vector<Comunidade*> Mundo::getComunidades()
 {
 	return this->comunidades;
 }
@@ -91,8 +91,8 @@ void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)
 {
 	// PROCURA PELO NINHO (ID)
 	for (int i = 0; i < this->getComunidades().size(); i++) {
-		if (comunidades[i].getId() == idNinho) {
-			comunidades[i].getNinho()->addFormiga(tipoFormiga, *this, posx, posy);
+		if (comunidades[i]->getId() == idNinho) {
+			comunidades[i]->getNinho()->addFormiga(tipoFormiga, *this, posx, posy);
 		}
 	}
 }
@@ -101,8 +101,8 @@ void Mundo::addEnergia2Ninho(int idNinho, int energ)
 {
 	// PROCURA PELO NINHO (ID)
 	for (int i = 0; i < this->getComunidades().size(); i++) {
-		if (comunidades[i].getId() == idNinho) {
-			comunidades[i].getNinho()->addEnergia(energ);
+		if (comunidades[i]->getId() == idNinho) {
+			comunidades[i]->getNinho()->addEnergia(energ);
 		}
 	}
 
@@ -122,13 +122,24 @@ void Mundo::addEnergia2Formiga(int x, int y, int energia)
 	int idFormiga;
 	// PROCURA A FORMIGA QUE ESTÁ NESSA POSIÇÃO
 	for (int i = 0; i < comunidades.size(); i++) {
-		idFormiga = comunidades[i].encontraFormiga(x, y);
+		idFormiga = comunidades[i]->encontraFormiga(x, y);
 		if (idFormiga != -1) { // SE UMA FORMIGA FOR ENCONTRADA NESSA POSIÇÃO
-			comunidades[i].addEnergia2Formiga(idFormiga, energia);
+			comunidades[i]->addEnergia2Formiga(idFormiga, energia);
 
 			return;
 		}
 
+	}
+}
+
+void Mundo::eliminaNinho(int idNinho)
+{
+	// PROCURA PELO NINHO (ID)
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+		if (comunidades[i]->getId() == idNinho) {
+			delete comunidades[i];
+			comunidades.erase(comunidades.begin() + i);
+		}
 	}
 }
 

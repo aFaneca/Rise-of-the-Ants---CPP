@@ -5,8 +5,8 @@
 /***************************************************************
 * Autores: António Faneca (21250021), Amadeus Alves (21260399)
 * Para: ISEC - Instituto Superior de Engenharia de Coimbra
-* Versão: V1.5
-* Data: 04/01/2018 12:30
+* Versão: V1.6
+* Data: 09/01/2018 00:50
 /***************************************************************/
 
 #include <sstream>

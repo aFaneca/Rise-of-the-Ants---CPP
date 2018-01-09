@@ -41,7 +41,6 @@ Formiga::Formiga(char tipo, int posx, int posy)
 	this->posy = posy;
 }
 
-
 Formiga::~Formiga()
 {
 }
