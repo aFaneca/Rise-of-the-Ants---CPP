@@ -130,6 +130,19 @@ void Interface::listaPosicao(int x, int y, Mundo & mundo) {
 	int total = 0;
 	Consola::gotoxy(1, mundo.getLimite() + LIMIAR + 5);
 	cout << "## INFO DA POSICAO (" << x << ", " << y << ") ##" << endl;
+	// VERIFICA SE POSSUI MIGALHA
+	for (int i = 0; i < mundo.getMigalhas().size(); i++) {
+		int px = mundo.getMigalhas()[i]->posx;
+		int py = mundo.getMigalhas()[i]->posy;
+
+		if (px == x && py == y) {
+			cout << "  " << desenho.ident1 << " Migalha " << mundo.getMigalhas()[i]->getId() << endl;
+			cout << "\t" << desenho.ident2 << " Energia: " << mundo.getMigalhas()[i]->energia << endl;
+			total++;
+		}
+	}
+
+	// VERIFICA SE TEM QUALQUER OUTRO ELEMENTO
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
 		int px = mundo.getComunidades()[i]->getNinho()->posx;
 		int py = mundo.getComunidades()[i]->getNinho()->posy;
@@ -146,10 +159,12 @@ void Interface::listaPosicao(int x, int y, Mundo & mundo) {
 			}
 		}
 	}
-	cout << "\t" << desenho.ident2 << " TOTAL: " << total;
+	cout << "\n\t" << desenho.ident3 << " TOTAL: " << total;
 }
 
 void Interface::movimentos(Mundo & mundo) {
+	mundo.geraMaisMigalhas();
+	mundo.iteracao();
 	for (int i = 0; i < mundo.getComunidades().size(); i++) {
 		// VERIFICA NINHOS
 		for (int j = 0; j < mundo.getComunidades()[i]->getNinho()->getFormigas().size(); j++) {
@@ -157,6 +172,7 @@ void Interface::movimentos(Mundo & mundo) {
 			mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->mover(mundo.getLimite(), mundo);
 			if (mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
 				//mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->suicidio();
+				delete mundo.getComunidades()[j]->getNinho()->getFormigas()[j];
 				mundo.getComunidades()[i]->getNinho()->getFormigas().erase(mundo.getComunidades()[i]->getNinho()->getFormigas().begin() + j);
 				j--;
 			}

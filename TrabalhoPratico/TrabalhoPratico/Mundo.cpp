@@ -108,12 +108,16 @@ void Mundo::addMigalha(int posx, int posy)
 	addGrelha(posx, posy, m->avatar);
 }
 
-void Mundo::gerarMigalhas()
+void Mundo::gerarMigalhas(int quantidade)
 {
 	int px, py;
 	int max = limite - 1;
 	int min = 1;
-	int nMigalhas = (limite * limite) * (posComMigalhas / 100.00);
+	int nMigalhas;
+	if (quantidade == -1)
+		nMigalhas = (limite * limite) * (posComMigalhas / 100.00);
+	else
+		nMigalhas = quantidade;
 
 	//ATRIBUIR POSICAO ALEATORIA E VERIFICAR SE ESTA OCUPADA - REPETIR ATE FALSE
 	for (int i = 0; i < nMigalhas; i++) {
@@ -124,8 +128,31 @@ void Mundo::gerarMigalhas()
 
 		addMigalha(px, py);
 	}
-	
+}
 
+void Mundo::geraMaisMigalhas()
+{
+	int min = 0;
+	int max = this->maxMigalhas;
+
+	int nMigalhas = rand() % (max - min + 1) + min;
+
+	gerarMigalhas(nMigalhas);
+}
+
+void Mundo::iteracao()
+{
+
+	// ORDENA AÇÃO DAS MIGALHAS EM CADA ITERAÇÃO
+	for (int i = 0; i < migalhas.size(); i++) {
+		migalhas[i]->iteracao();
+		if (migalhas[i]->energia < (migalhas[i]->getEnergiaInicial() * 0.1)) {
+			delete migalhas[i];
+			if (!migalhas.empty())
+				migalhas.erase(migalhas.begin() + i);
+		}		
+	}
+		
 }
 
 void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)

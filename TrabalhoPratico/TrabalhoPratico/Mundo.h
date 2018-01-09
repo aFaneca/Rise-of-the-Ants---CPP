@@ -49,7 +49,9 @@ public:
 	void mataFormiga(int posx, int posy);
 	vector<Migalha *> getMigalhas();
 	void addMigalha(int posx, int posy);
-	void gerarMigalhas();
+	void gerarMigalhas(int quanatidade = -1);
+	void geraMaisMigalhas();
+	void iteracao();
 };
 
 #endif
