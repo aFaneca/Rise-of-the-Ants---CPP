@@ -89,7 +89,7 @@ void Mundo::setEnergiaTransferida(double v)
 void Mundo::addComunidade(int posy, int posx)
 {
 	//Comunidade c = new Comunidade(posx, posy);
-	comunidades.push_back(new Comunidade(posx, posy, energiaInicialNinhos));
+	comunidades.push_back(new Comunidade(posx, posy, energiaInicialNinhos, *this));
 }
 
 vector<Comunidade*> Mundo::getComunidades()
@@ -156,7 +156,7 @@ void Mundo::iteraFormigas() {
 		// VERIFICA NINHOS
 		for (int j = 0; j < comunidades[i]->getNinho()->getFormigas().size(); j++) {
 			// VERIFICA AS FORMIGAS DE CADA NINHO
-			comunidades[i]->getNinho()->getFormigas()[j]->mover(limite, *this);
+			comunidades[i]->getNinho()->getFormigas()[j]->mover(limite);
 			if (comunidades[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
 				int posx = comunidades[i]->getNinho()->getFormigas()[j]->posx;
 				int posy = comunidades[i]->getNinho()->getFormigas()[j]->posy;
@@ -188,7 +188,7 @@ void Mundo::addFormiga2Ninho(int idNinho, char tipoFormiga, int posx, int posy)
 	// PROCURA PELO NINHO (ID)
 	for (int i = 0; i < this->getComunidades().size(); i++) {
 		if (comunidades[i]->getId() == idNinho) {
-			comunidades[i]->getNinho()->addFormiga(tipoFormiga, *this, posx, posy);
+			comunidades[i]->getNinho()->addFormiga(tipoFormiga, posx, posy);
 		}
 	}
 }
@@ -206,11 +206,57 @@ void Mundo::addEnergia2Ninho(int idNinho, int energ)
 
 bool Mundo::temFormiga(int x, int y)
 {
-	if (this->grelha[x - 1][y - 1] == 'E' || this->grelha[x - 1][y - 1] == 'A' || this->grelha[x - 1][y - 1] == 'V' || 
+	/*if (this->grelha[x - 1][y - 1] == 'E' || this->grelha[x - 1][y - 1] == 'A' || this->grelha[x - 1][y - 1] == 'V' || 
 		this->grelha[x - 1][y - 1] == 'C' || this->grelha[x - 1][y - 1] == 'S')
 		return true;
 
+	return false;*/
+
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+		for (int j = 0; j < this->getComunidades()[i]->getNinho()->getFormigas().size(); j++) {
+			Formiga *f1 = this->getComunidades()[i]->getNinho()->getFormigas()[j];
+			if (f1->posx == x && f1->posy == y) {
+				return true;
+				break;
+			}
+		}
+	}
+
 	return false;
+}
+
+Formiga * Mundo::encontraFormiga(int x, int y)
+{
+
+
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+		for (int j = 0; j < this->getComunidades()[i]->getNinho()->getFormigas().size(); j++) {
+			Formiga *f1 = this->getComunidades()[i]->getNinho()->getFormigas()[j];
+			if (f1->posx == x && f1->posy == y) {
+				return f1;
+				break;
+			}
+		}
+	}
+
+	return NULL;
+}
+
+int Mundo::getQuadrante(int x, int y)
+{
+	if (x < 0 && y < 0)
+		return 1;
+	if (x > 0 && y < 0)
+		return 2;
+	if (x < 0 && y < 0)
+		return 3;
+	else
+		return 4;
+}
+
+int Mundo::getAleatorio(int min, int max)
+{
+	return (rand() % (max - min + 1) + min);
 }
 
 void Mundo::addEnergia2Formiga(int x, int y, int energia)

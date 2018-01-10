@@ -3,15 +3,32 @@
 
 int Formiga::i = 0;
 
-Formiga::Formiga(char tipo, int posx, int posy)
+Formiga::Formiga(char tipo, int posx, int posy, Ninho &n)
 {
 	this->id = i++;
 	this->tipo = tipo;
+	this->n = &n;
+	setPropriedades(tipo);
+	this->posx = posx;
+	this->posy = posy;
+}
+
+Formiga::~Formiga()
+{
+	//delete this;
+}
+
+
+void Formiga::setPropriedades(char tipo) {
 	if (tipo == 'E') {
 		this->avatar = 'E';
 		this->raioVisao = 10;
 		this->raioMovimento = 8;
-		this->energia = 200; 
+		this->energia = 200;
+
+		regras.reserve(regras.size() + 1);
+		regras.push_back(new RegraFoge(tipo, *this, *n->getMundo()));
+		
 	}
 	if (tipo == 'A') {
 		this->avatar = 'A';
@@ -37,22 +54,34 @@ Formiga::Formiga(char tipo, int posx, int posy)
 		this->raioMovimento = 8;
 		this->energia = 200;
 	}
-	this->posx = posx;
-	this->posy = posy;
 }
-
-Formiga::~Formiga()
+vector<Regra*> Formiga::getRegras()
 {
-	//delete this;
+	return this->regras;
 }
+int Formiga::calculaMovimento(int x1, int y1)
+{
+	int x = this->posx;
+	int y = this->posy;
 
+	int maximo = max(abs(x - x1), abs(y - y1));
+
+	return maximo;
+}
+bool Formiga::podeMoverPara(int x1, int y1)
+{
+	if (calculaMovimento(x1, y1) <= this->raioMovimento)
+		return true;
+	return false;
+}
 char Formiga::getTipo()
 {
 	return this->tipo;
 }
 
-void Formiga::mover(int limite, Mundo & mundo)
+void Formiga::mover(int limite)
 {
+	Mundo *mundo = n->getMundo();
 	int tentativas = 0;
 	do {
 		this->dx = rand() % (2 * raioMovimento + 1) - raioMovimento;
@@ -63,7 +92,7 @@ void Formiga::mover(int limite, Mundo & mundo)
 			return;
 		}
 		
-	} while (!mundo.validaPos(this->posx, this->posy,this->dx, this->dy));
+	} while (!mundo->validaPos(this->posx, this->posy,this->dx, this->dy));
 	int novaPosX = this->posx + this->dx;
 	int novaPosY = this->posy + this->dy;
 	atualizaEnergia(this->tipo, novaPosX, novaPosY);
@@ -110,4 +139,6 @@ void Formiga::suicidio()
 		delete this;
 }
 
-
+Ninho * Formiga::getNinho() {
+	return this->n;
+}

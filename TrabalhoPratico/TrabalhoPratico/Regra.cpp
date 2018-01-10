@@ -11,12 +11,12 @@ Regra::~Regra()
 {
 }
 
-bool Regra::condicao()
-{
-	return false;
-}
-
-bool Regra::acao()
-{
-	return false;
-}
+//bool Regra::condicao()
+//{
+//	return false;
+//}
+//
+//void Regra::acao()
+//{
+//	return;
+//}

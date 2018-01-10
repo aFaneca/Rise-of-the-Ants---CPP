@@ -55,6 +55,9 @@ public:
 	void iteraFormigas();
 	void iteraNinhos();
 	void iteraMigalhas();
+	Formiga * encontraFormiga(int x, int y);
+	int getQuadrante(int x, int y);
+	int getAleatorio(int min, int max);
 };
 
 #endif

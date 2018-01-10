@@ -3,12 +3,13 @@
 #include "Formiga.h"
 int Ninho::i = 1;
 
-Ninho::Ninho(int posx, int posy, int energiaInicial)
+Ninho::Ninho(int posx, int posy, int energiaInicial, Mundo &m)
 {
 	this->id = i++;
 	this->avatar = 178;
 	this->posx = posx;
 	this->posy = posy;
+	this->m = &m;
 	energia = energiaInicial;
 }
 
@@ -28,10 +29,10 @@ vector<Formiga *> Ninho::getFormigas()
 	return this->formigas;
 }
 
-void Ninho::addFormiga(char tipo, Mundo & mundo, int posx, int posy)
+void Ninho::addFormiga(char tipo, int posx, int posy)
 {
 	int px, py;
-	int max = mundo.getLimite() - 1;
+	int max = m->getLimite() - 1;
 	int min = 1;
 
 	if (posx == -1) {
@@ -39,16 +40,16 @@ void Ninho::addFormiga(char tipo, Mundo & mundo, int posx, int posy)
 		do {
 			px = rand() % (max - min + 1) + min;
 			py = rand() % (max - min + 1) + min;
-		} while (mundo.ocupada(px, py));
+		} while (m->ocupada(px, py));
 	}
 	else {
 		px = posx;
 		py = posy;
 	}
-	Formiga *f = new Formiga(tipo, px, py);
+	Formiga *f = new Formiga(tipo, px, py, *this);
 	formigas.reserve(formigas.size() + 1);
 	formigas.push_back(f);
-	mundo.addGrelha(px, py, f->avatar);
+	m->addGrelha(px, py, f->avatar);
 }
 
 void Ninho::addEnergia(int valor)
@@ -66,4 +67,9 @@ void Ninho::mataFormiga(int idFormiga)
 				formigas.erase(formigas.begin() + i);
 		}
 	}
+}
+
+Mundo * Ninho::getMundo()
+{
+		return m;
 }

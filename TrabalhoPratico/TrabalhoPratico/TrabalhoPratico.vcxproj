@@ -121,6 +121,7 @@
     <ClCompile Include="Processador.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Regra.cpp" />
+    <ClCompile Include="RegraFoge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Comunidade.h" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Mundo.h" />
     <ClInclude Include="Ninho.h" />
     <ClInclude Include="Regra.h" />
+    <ClInclude Include="RegraFoge.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrabalhoPratico.rc" />

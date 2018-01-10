@@ -7,11 +7,13 @@
 #include "Ninho.h"
 class Comunidade : public Elementos
 {
+
 private:
 	Ninho *ninho;
 	int id;
+	Mundo *mundo;
 public:
-	Comunidade(int posx, int posy, int energiaInicial);
+	Comunidade(int posx, int posy, int energiaInicial, Mundo &m);
 	~Comunidade();
 	Ninho* getNinho();
 	int getId();
