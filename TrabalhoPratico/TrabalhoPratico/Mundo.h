@@ -63,6 +63,8 @@ public:
 	Ninho * encontraNinho(int x, int y);
 	bool temMigalha(int x, int y);
 	Migalha * encontraMigalha(int x, int y);
+	double getEnergiaTransferida();
+	double getValorEnergia();
 };
 
 #endif

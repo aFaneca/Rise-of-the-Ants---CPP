@@ -35,24 +35,48 @@ RegraAssalta::~RegraAssalta()
 
 // Está uma formiga de outra comunidade no seu raio de visão?
 bool RegraAssalta::condicao() {
-	for (int x = -(f->raioVisao); x < +(f->raioVisao + 1); x++) {
-		for (int y = -(f->raioVisao); y < +(f->raioVisao + 1); y++) { // PROCURA TODOS OS CAMPOS NO SEU RAIO DE VISÃO
-			if (m->temFormiga(x, y)) { // SE HOUVER ALGUMA FORMIGA NESTA POSIÇÃO
-				formigaInimiga = m->encontraFormiga(x, y); //	RECEBE ESSA FORMIGA
-				if (formigaInimiga->getNinho()->getId() != f->getNinho()->getId()) { // SE O ID FOR DIFERENTE => SÃO DE COMUNIDADES DIFERENTES
-					this->setAssaltada(*formigaInimiga);
-					return true;
+	if (f->getTipo() != 'S') {
+		for (int x = -(f->raioVisao); x < +(f->raioVisao + 1); x++) {
+			for (int y = -(f->raioVisao); y < +(f->raioVisao + 1); y++) { // PROCURA TODOS OS CAMPOS NO SEU RAIO DE VISÃO
+				if (m->temFormiga(x, y)) { // SE HOUVER ALGUMA FORMIGA NESTA POSIÇÃO
+					formigaInimiga = m->encontraFormiga(x, y); //	RECEBE ESSA FORMIGA
+					if (formigaInimiga->getNinho()->getId() != f->getNinho()->getId()) { // SE O ID FOR DIFERENTE => SÃO DE COMUNIDADES DIFERENTES
+						this->setAssaltada(*formigaInimiga);
+						return true;
+					}
 				}
 			}
 		}
+		return false;
+	}
+	else {
+		for (int x = -(f->raioVisao); x < +(f->raioVisao + 1); x++) {
+			for (int y = -(f->raioVisao); y < +(f->raioVisao + 1); y++) { // PROCURA TODOS OS CAMPOS NO SEU RAIO DE VISÃO
+				if (m->temFormiga(x, y)) { // SE HOUVER ALGUMA FORMIGA NESTA POSIÇÃO
+					formigaInimiga = m->encontraFormiga(x, y); //	RECEBE ESSA FORMIGA
+					if (formigaInimiga->getNinho()->getId() != f->getNinho()->getId()) { // SE O ID FOR DIFERENTE => SÃO DE COMUNIDADES DIFERENTES
+						this->formigas.push_back(formigaInimiga);
+
+					}
+				}
+			}
+		}
+		if (this->formigas.size() >= 3)
+			return true;
 	}
 	return false;
 }
-
 // ASSALTA-A E ROUBA-LHE 50% DE ENERGIA
 void RegraAssalta::acao() {
-	f->energia += 0.5 * (assaltada->energia);
-	assaltada->energia -= 0.5 * (assaltada->energia);
+	if (f->getTipo() != 'S') {
+		f->energia += 0.5 * (assaltada->energia);
+		assaltada->energia -= 0.5 * (assaltada->energia);
+	}
+	else {
+		assaltada->energia -= 0.5 * (assaltada->energia);
+		f->energia += 0;  // SUICIDA-SE
+	}
+	
 }
 
 

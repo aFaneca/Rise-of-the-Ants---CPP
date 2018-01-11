@@ -285,6 +285,14 @@ Migalha * Mundo::encontraMigalha(int x, int y) {
 	}
 	return NULL;
 }
+double Mundo::getEnergiaTransferida()
+{
+	return energiaTransferida;
+}
+double Mundo::getValorEnergia()
+{
+	return valorEnergia;
+}
 int Mundo::getQuadrante(int x, int y)
 {
 	if (x < 0 && y < 0)

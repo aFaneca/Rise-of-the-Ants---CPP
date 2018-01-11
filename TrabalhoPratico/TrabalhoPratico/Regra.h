@@ -122,6 +122,7 @@ class RegraAssalta : public Regra
 {
 protected:
 	Formiga * assaltada;
+	vector<Formiga *> formigas;
 public:
 	RegraAssalta(char tipo, Formiga &f, Mundo &m);
 	~RegraAssalta();

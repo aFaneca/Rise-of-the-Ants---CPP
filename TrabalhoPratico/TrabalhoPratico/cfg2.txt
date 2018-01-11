@@ -1,10 +1,5 @@
 ninho 5 6
-criaf 5 E 1
+ninho 7 9
 tempo
 tempo
 criaf 5 E 2
-tempo
-tempo
-tempo
-listaposicao 6 5
-energninho 1 1203

@@ -72,6 +72,8 @@ void Formiga::setPropriedades(char tipo) {
 		this->raioVisao = 10;
 		this->raioMovimento = 8;
 		this->energia = this->energiaInicial = 200;
+		regras.reserve(regras.size() + 1);
+		regras.push_back(new RegraAssalta(tipo, *this, *n->getMundo()));
 	}
 }
 vector<Regra*> Formiga::getRegras()
@@ -164,10 +166,33 @@ Ninho * Formiga::getNinho() {
 
 void Formiga::correRegras()
 {
-	for (int i = 0; i < regras.size(); i++) {
-		if (regras[i]->condicao()) {
-			regras[i]->acao();
-			break;
+	if (!n->getMundo()->temNinho(this->posx, this->posy)) {
+		for (int i = 0; i < regras.size(); i++) {
+			if (regras[i]->condicao()) {
+				regras[i]->acao();
+				break;
+			}
 		}
 	}
+	// SE ESTIVER NO NINHO
+	else {
+		if (this->energia > 0.5 * this->energiaInicial) {
+			int valorAReceber = n->getMundo()->getEnergiaTransferida();
+			this->energia += valorAReceber;
+			n->energia -= valorAReceber;
+		}
+
+		else if (this->energia > this->energiaInicial) {
+			int valorAEnviar = n->getMundo()->getEnergiaTransferida();
+			this->energia -= valorAEnviar;
+			n->energia += valorAEnviar;
+		}
+
+		else if (this->energia > this->energiaInicial * 0.5 || n->energia == 1)
+			this->mover();
+
+	}
+
+
+	
 }

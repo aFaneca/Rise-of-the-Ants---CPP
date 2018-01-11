@@ -79,5 +79,22 @@ void Ninho::correRegras()
 	// ITERA POR TODAS AS FORMIGAS DO NINHO
 	for (int i = 0; i < formigas.size(); i++) {
 		formigas[i]->correRegras();
+
+		if (formigas[i]->energia > this->energiaInicial * (m->getValorEnergia() / 100)) { //SE A ENERGIA DO NINHO FOR SUPERIOR A C% DA ENERGIA INICAL
+			int min = 0;
+			int max = 4;
+			int sorte = rand() % (max - min + 1) + min;
+			char tipo;
+			int energiaARetirar;
+			switch (sorte) {
+			case 0: tipo = 'C'; energiaARetirar = 100; break;
+			case 1: tipo = 'A'; energiaARetirar = 80; break;
+			case 2: tipo = 'V'; energiaARetirar = 150; break;
+			case 3: tipo = 'E'; energiaARetirar = 200; break;
+			case 4: tipo = 'S'; energiaARetirar = 200; break;
+			}
+			this->addFormiga(tipo, this->posx, this->posy);
+			this->energia -= energiaARetirar;
+		}
 	}
 }

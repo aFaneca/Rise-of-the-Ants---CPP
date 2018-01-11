@@ -632,6 +632,47 @@ bool Processador::processaComandos(string nomeFicheiro, bool *defmundo, bool *de
 				}
 			}
 		}
+		else if (!comando.compare(0, 5, "mata ")) {
+			bool encontrou = false;
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					// VERIFICAR SE A POSICAO TEM FORMIGA
+					int posx = stoi(palavra[2]);
+					int posy = stoi(palavra[1]);
+
+					if (posx < 1 || posy < 1 || posx > *limite || posy > *limite) //SE NÃO ULTRAPASSAR OS LIMITES
+						cerr << "Posicao Invalida.";
+					else {
+						if (mundo.temFormiga(posx, posy))
+							mundo.mataFormiga(posx, posy);
+						else
+							cerr << "Nenhuma formiga foi encontrada em (" << posx << ", " << posy << ").";
+					}
+
+				}
+			}
+		}
+		else if (!comando.compare(0, 8, "migalha ")) {
+			Consola::clrscr();
+			if (*inicio != true)
+				cout << "Este comando so pode ser utilizado depois do inicio da simulacao.";
+			else {
+				if (valida(palavra, limite, energiaInicialNinhos, valorEnergia, posComMigalhas, energiaInicialMigalhas, maxMigalhas, energiaTransferida)) {
+					//VERIFICAR SE A POSICAO ESTÁ LIVRE
+					int posx = stoi(palavra[2]);
+					int posy = stoi(palavra[1]);
+
+					if (!mundo.ocupada(posx, posy))
+						mundo.addMigalha(posx, posy);
+					else
+						cerr << "A posicao (" << posx << ", " << posy << ") ja se encontra ocupada.";
+				}
+
+			}
+		}
 		else if (!comando.compare("sair")) {
 			Consola::clrscr();
 			//DESTRUIR PONTEIRO PARA NINHO
