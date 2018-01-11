@@ -1,15 +1,14 @@
 #ifndef FORMIGA_H
 #define FORMIGA_H
 #pragma once
-//#include "Regra.h"
+#include "Regra.h"
 #include "Processador.h"
 #include "Elementos.h"
-#include "Regra.h"
 #include "Ninho.h"
 #include <algorithm>    // std::max
 #include <cmath>        // std::abs
 
-
+class Regra;
 class Formiga : public Elementos
 {
 private:

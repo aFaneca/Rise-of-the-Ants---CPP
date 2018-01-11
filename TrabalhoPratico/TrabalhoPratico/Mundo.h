@@ -3,6 +3,7 @@
 #pragma once
 #include "Processador.h"
 #include "Elementos.h"
+#include "Formiga.h"
 //class Comunidade;
 class Mundo : public Elementos
 {

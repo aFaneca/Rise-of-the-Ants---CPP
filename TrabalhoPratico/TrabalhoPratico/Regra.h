@@ -1,8 +1,8 @@
+#ifndef REGRA_H
+#define REGRA_H
 #pragma once
 #include "Mundo.h"
-
-
-class Formiga;
+#include "Formiga.h"
 
 class Regra
 {
@@ -16,9 +16,9 @@ public:
 	~Regra();
 
 
-	virtual bool condicao();
-	virtual void acao();
-	virtual bool validaPos(int x, int y);
+	virtual bool condicao() = 0;
+	virtual void acao() = 0;
+	virtual bool validaPos(int x, int y) = 0;
 };
 
 class RegraVaiParaNinho : public Regra
@@ -28,7 +28,7 @@ public:
 	~RegraVaiParaNinho();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
 class RegraProtege : public Regra
@@ -38,7 +38,7 @@ public:
 	~RegraProtege();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
 
@@ -49,7 +49,7 @@ public:
 	~RegraProcuraMigalha();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
 class RegraPersegue : public Regra
@@ -59,7 +59,7 @@ public:
 	~RegraPersegue();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
 class RegraPasseia : public Regra
@@ -69,7 +69,7 @@ public:
 	~RegraPasseia();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
 class RegraFoge : public Regra
@@ -90,7 +90,7 @@ public:
 	~RegraComeMigalha();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
 class RegraAssalta : public Regra
@@ -100,6 +100,7 @@ public:
 	~RegraAssalta();
 	bool condicao();
 	void acao();
-	bool validaPos(int x, int y);
+	//bool validaPos(int x, int y);
 };
 
+#endif

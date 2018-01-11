@@ -1,5 +1,5 @@
 #include "Regra.h"
-#include "Formiga.h"
+
 
 
 Regra::~Regra()
