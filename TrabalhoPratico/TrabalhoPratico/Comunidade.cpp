@@ -1,5 +1,5 @@
 #include "Comunidade.h"
-
+#include "Mundo.h"
 #include "Formiga.h"
 
 Comunidade::Comunidade(int posx, int posy, int energiaInicial, Mundo &m) 

@@ -156,7 +156,7 @@ void Mundo::iteraFormigas() {
 		// VERIFICA NINHOS
 		for (int j = 0; j < comunidades[i]->getNinho()->getFormigas().size(); j++) {
 			// VERIFICA AS FORMIGAS DE CADA NINHO
-			comunidades[i]->getNinho()->getFormigas()[j]->mover(limite);
+			//comunidades[i]->getNinho()->getFormigas()[j]->mover();
 			if (comunidades[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
 				int posx = comunidades[i]->getNinho()->getFormigas()[j]->posx;
 				int posy = comunidades[i]->getNinho()->getFormigas()[j]->posy;

@@ -79,7 +79,7 @@ char Formiga::getTipo()
 	return this->tipo;
 }
 
-void Formiga::mover(int limite)
+void Formiga::mover()
 {
 	Mundo *mundo = n->getMundo();
 	int tentativas = 0;

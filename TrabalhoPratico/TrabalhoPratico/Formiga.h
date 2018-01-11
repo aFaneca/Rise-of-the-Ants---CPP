@@ -1,13 +1,14 @@
 #ifndef FORMIGA_H
 #define FORMIGA_H
 #pragma once
+//#include "Regra.h"
 #include "Processador.h"
 #include "Elementos.h"
 #include "Regra.h"
-#include "RegraFoge.h"
 #include "Ninho.h"
 #include <algorithm>    // std::max
 #include <cmath>        // std::abs
+
 
 class Formiga : public Elementos
 {
@@ -22,7 +23,7 @@ public:
 	Formiga(char tipo, int posx, int posy, Ninho &n);
 	~Formiga();
 	char getTipo();
-	void mover(int limite);
+	void mover();
 	void setPosx(int x);
 	void setPosy(int y);
 	int getId();
