@@ -24,35 +24,54 @@ void Formiga::setPropriedades(char tipo) {
 		this->avatar = 'E';
 		this->raioVisao = 10;
 		this->raioMovimento = 8;
-		this->energia = 200;
+		this->energia = this->energiaInicial = 200;
 
-		regras.reserve(regras.size() + 1);
-		regras.push_back(new RegraFoge(tipo, *this, *n->getMundo()));
+		regras.reserve(regras.size() + 2);
+		regras.push_back(new RegraComeMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraPasseia(tipo, *this, *n->getMundo()));
+
 		
 	}
 	if (tipo == 'A') {
 		this->avatar = 'A';
 		this->raioVisao = 8;
 		this->raioMovimento = 4;
-		this->energia = 80;
+		this->energia = this->energiaInicial = 80;
+		regras.reserve(regras.size() + 5);
+		regras.push_back(new RegraAssalta(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraPersegue(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraComeMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraProcuraMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraPasseia(tipo, *this, *n->getMundo()));
 	}
 	if (tipo == 'V') {
 		this->avatar = 'V';
 		this->raioVisao = 7;
 		this->raioMovimento = 5;
-		this->energia = 150;
+		this->energia = this->energiaInicial = 150;
+		regras.reserve(regras.size() + 4);
+		regras.push_back(new RegraProtege(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraComeMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraProcuraMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraPasseia(tipo, *this, *n->getMundo()));
 	}
 	if (tipo == 'C') {
 		this->avatar = 'C';
 		this->raioVisao = 5;
 		this->raioMovimento = 3;
-		this->energia = 100;
+		this->energia = this->energiaInicial = 100;
+		regras.reserve(regras.size() + 5);
+		regras.push_back(new RegraFoge(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraComeMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraProcuraMigalha(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraVaiParaNinho(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraPasseia(tipo, *this, *n->getMundo()));
 	}
 	if (tipo == 'S') {
 		this->avatar = 'S';
 		this->raioVisao = 10;
 		this->raioMovimento = 8;
-		this->energia = 200;
+		this->energia = this->energiaInicial = 200;
 	}
 }
 vector<Regra*> Formiga::getRegras()
@@ -141,4 +160,14 @@ void Formiga::suicidio()
 
 Ninho * Formiga::getNinho() {
 	return this->n;
+}
+
+void Formiga::correRegras()
+{
+	for (int i = 0; i < regras.size(); i++) {
+		if (regras[i]->condicao()) {
+			regras[i]->acao();
+			break;
+		}
+	}
 }

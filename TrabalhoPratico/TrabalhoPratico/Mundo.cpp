@@ -157,6 +157,13 @@ void Mundo::iteraFormigas() {
 		for (int j = 0; j < comunidades[i]->getNinho()->getFormigas().size(); j++) {
 			// VERIFICA AS FORMIGAS DE CADA NINHO
 			//comunidades[i]->getNinho()->getFormigas()[j]->mover();
+			comunidades[i]->getNinho()->correRegras();
+			// VERIFICA SE ESTÁ NO NINHO
+			if (this->temNinho(comunidades[i]->getNinho()->getFormigas()[j]->posx, comunidades[i]->getNinho()->getFormigas()[j]->posy))
+				comunidades[i]->getNinho()->getFormigas()[j]->foraDoNinho++;
+			else
+				comunidades[i]->getNinho()->getFormigas()[j]->foraDoNinho = 0;
+			
 			if (comunidades[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
 				int posx = comunidades[i]->getNinho()->getFormigas()[j]->posx;
 				int posy = comunidades[i]->getNinho()->getFormigas()[j]->posy;
@@ -224,7 +231,15 @@ bool Mundo::temFormiga(int x, int y)
 
 	return false;
 }
-
+bool Mundo::temNinho(int x, int y) {
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+			Ninho *n1 = this->getComunidades()[i]->getNinho();
+			if (n1->posx == x && n1->posy == y) {
+				return true;
+			}
+	}
+	return false;
+}
 Formiga * Mundo::encontraFormiga(int x, int y)
 {
 
@@ -241,7 +256,15 @@ Formiga * Mundo::encontraFormiga(int x, int y)
 
 	return NULL;
 }
-
+Ninho * Mundo::encontraNinho(int x, int y) {
+	for (int i = 0; i < this->getComunidades().size(); i++) {
+		Ninho *n1 = this->getComunidades()[i]->getNinho();
+		if (n1->posx == x && n1->posy == y) {
+			return n1;
+		}
+	}
+	return NULL;
+}
 int Mundo::getQuadrante(int x, int y)
 {
 	if (x < 0 && y < 0)

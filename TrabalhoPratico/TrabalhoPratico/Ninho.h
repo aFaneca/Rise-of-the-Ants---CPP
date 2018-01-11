@@ -23,6 +23,7 @@ public:
 	void addEnergia(int valor);
 	void mataFormiga(int idFormiga);
 	Mundo * getMundo();
+	void correRegras();
 };
 
 #endif

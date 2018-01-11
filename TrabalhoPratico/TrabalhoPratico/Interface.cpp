@@ -239,7 +239,8 @@ void Interface::mostraMundo(Mundo & mundo)
 			posx = mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->posx;
 			posy = mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->posy;
 			avatar = mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->avatar;
-			mundo.grelha[posx - 1][posy - 1] = mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->getTipo();
+			if(!mundo.temNinho(posx - 1, posy - 1))
+				mundo.grelha[posx - 1][posy - 1] = mundo.getComunidades()[i]->getNinho()->getFormigas()[j]->getTipo();
 
 			Consola::gotoxy(posx, posy + LIMIAR);
 			cout << avatar;

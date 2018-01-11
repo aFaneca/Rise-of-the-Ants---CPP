@@ -59,6 +59,8 @@ public:
 	Formiga * encontraFormiga(int x, int y);
 	int getQuadrante(int x, int y);
 	int getAleatorio(int min, int max);
+	bool temNinho(int x, int y);
+	Ninho * encontraNinho(int x, int y);
 };
 
 #endif

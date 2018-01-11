@@ -11,6 +11,8 @@ public:
 	char avatar;
 	int raioVisao, raioMovimento, dx = 0, dy = 0;
 	int energia;
+	int energiaInicial;
+	int foraDoNinho = 0;
 };
 
 #endif

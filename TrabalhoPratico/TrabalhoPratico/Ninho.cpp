@@ -73,3 +73,11 @@ Mundo * Ninho::getMundo()
 {
 		return m;
 }
+
+void Ninho::correRegras()
+{
+	// ITERA POR TODAS AS FORMIGAS DO NINHO
+	for (int i = 0; i < formigas.size(); i++) {
+		formigas[i]->correRegras();
+	}
+}

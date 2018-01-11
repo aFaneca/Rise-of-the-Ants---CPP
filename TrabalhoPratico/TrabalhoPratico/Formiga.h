@@ -18,6 +18,7 @@ private:
 	vector<Regra *> regras;
 	Ninho *n;
 
+
 public:
 	Formiga(char tipo, int posx, int posy, Ninho &n);
 	~Formiga();
@@ -34,6 +35,7 @@ public:
 	int calculaMovimento(int x1, int y1);
 	bool podeMoverPara(int x1, int y1);
 	Ninho * getNinho();
+	void correRegras();
 };
 
 #endif
