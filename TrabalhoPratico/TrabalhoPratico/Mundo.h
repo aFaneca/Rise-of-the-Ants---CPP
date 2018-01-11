@@ -61,6 +61,8 @@ public:
 	int getAleatorio(int min, int max);
 	bool temNinho(int x, int y);
 	Ninho * encontraNinho(int x, int y);
+	bool temMigalha(int x, int y);
+	Migalha * encontraMigalha(int x, int y);
 };
 
 #endif

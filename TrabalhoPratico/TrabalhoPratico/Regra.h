@@ -56,6 +56,9 @@ public:
 
 class RegraProcuraMigalha : public Regra
 {
+protected:
+	Formiga * f;
+	vector<Migalha *> migalhas;
 public:
 	RegraProcuraMigalha(char tipo, Formiga &f, Mundo &m);
 	~RegraProcuraMigalha();
@@ -66,6 +69,8 @@ public:
 
 class RegraPersegue : public Regra
 {
+protected:
+	vector<Formiga *> formigas;
 public:
 	RegraPersegue(char tipo, Formiga &f, Mundo &m);
 	~RegraPersegue();

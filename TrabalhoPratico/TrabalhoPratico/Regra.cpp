@@ -232,14 +232,83 @@ RegraPersegue::~RegraPersegue()
 }
 
 
-// Está uma formiga de outra comunidade e uma aliada no seu raio de visão?
+// Estão formigas inimigas no seu raio de visão?
 bool RegraPersegue::condicao() {
+	for (int x = -(f->raioVisao); x < +(f->raioVisao + 1); x++) {
+		for (int y = -(f->raioVisao); y < +(f->raioVisao + 1); y++) { // PROCURA TODOS OS CAMPOS NO SEU RAIO DE VISÃO
+			if (m->temFormiga(x, y)) { // SE HOUVER ALGUMA MIGALHA NESTA POSIÇÃO
+				Formiga *formiga = m->encontraFormiga(x, y);
+				if(formiga->getNinho()->getId() != f->getNinho()->getId()) // SE FOREM INIMIGOS
+					formigas.push_back(formiga); //	RECEBE ESSA MIGALHA
+				return true;
+			}
+		}
+	}
+
 	return false;
 }
 
-// METER-SE NO MEIO DAS DUAS
+// PERSEGUE A FORMIGA QUE TIVER MAIS ENERGIA
 void RegraPersegue::acao() {
-	
+	int quadrante;
+	int min = 0, max = 0, novaPosX, novaPosY, x = 0, y = 0;
+	// PROCURA A MIGALHA COM MAIS ENERGIA
+	Formiga *formigaComMaisEnergia;
+	formigaComMaisEnergia = formigas[0];
+	for (int i = 1; i < this->formigas.size(); i++) {
+		if (formigas[i]->energia > formigaComMaisEnergia->energia)
+			formigaComMaisEnergia = formigas[i];
+	}
+
+	if (f->podeMoverPara(formigaComMaisEnergia->posx, formigaComMaisEnergia->posy)) {
+		f->posx = formigaComMaisEnergia->posx;
+		f->posy = formigaComMaisEnergia->posy;
+	}
+	else {
+		do {
+			quadrante = m->getQuadrante(formigaComMaisEnergia->posx, formigaComMaisEnergia->posy);
+			if (quadrante == 1) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO PRIMEIRO QUADRANTE
+				min = x;
+				max = x + f->raioMovimento;
+				novaPosX = m->getAleatorio(min, max);
+				min = y;
+				max = y + f->raioMovimento;
+				novaPosY = m->getAleatorio(min, max);
+			}
+			else if (quadrante == 2) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO SEGUNDO QUADRANTE
+				min = x - f->raioMovimento;
+				max = x;
+				novaPosX = m->getAleatorio(min, max);
+				min = y;
+				max = y + f->raioMovimento;
+				novaPosY = m->getAleatorio(min, max);
+			}
+			else if (quadrante == 3) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO TERCEIRO QUADRANTE
+				min = x - f->raioMovimento;
+				max = x;
+				novaPosX = m->getAleatorio(min, max);
+				min = y - f->raioMovimento;
+				max = y;
+				novaPosY = m->getAleatorio(min, max);
+			}
+			else if (quadrante == 4) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO QUARTO QUADRANTE
+				min = x;
+				max = x - f->raioMovimento;
+				novaPosX = m->getAleatorio(min, max);
+				min = y - f->raioMovimento;
+				max = y;
+				novaPosY = m->getAleatorio(min, max);
+			}
+
+		} while (!validaPos(novaPosX, novaPosY));
+
+		f->posx = novaPosX;
+		f->posy = novaPosY;
+	}
 }
 
 RegraProcuraMigalha::RegraProcuraMigalha(char tipo, Formiga &f, Mundo &m) :Regra()
@@ -254,13 +323,82 @@ RegraProcuraMigalha::~RegraProcuraMigalha()
 {
 }
 
-// Está uma formiga de outra comunidade no seu raio de visão?
+// TEM MIGALHA NO RAIO DE VISÃO
 bool RegraProcuraMigalha::condicao() {
+	for (int x = -(f->raioVisao); x < +(f->raioVisao + 1); x++) {
+		for (int y = -(f->raioVisao); y < +(f->raioVisao + 1); y++) { // PROCURA TODOS OS CAMPOS NO SEU RAIO DE VISÃO
+			if (m->temMigalha(x, y)) { // SE HOUVER ALGUMA MIGALHA NESTA POSIÇÃO
+				migalhas.push_back(m->encontraMigalha(x, y)); //	RECEBE ESSA MIGALHA
+					return true;
+			}
+		}
+	}
+
 	return false;
 }
 
-// FUGIR PARA QUADRANTE OPOSTO
+// MOVIMENTA-SE NA DIREÇÃO DA MIGALHA COM MAIS ENERGIA
 void RegraProcuraMigalha::acao() {
+	int quadrante;
+	int min = 0, max = 0, novaPosX, novaPosY, x = 0, y = 0;
+	// PROCURA A MIGALHA COM MAIS ENERGIA
+	Migalha *migalhaComMaisEnergia;
+	migalhaComMaisEnergia = migalhas[0];
+	for (int i = 1; i < this->migalhas.size(); i++) {
+		if(migalhas[i]->energia > migalhaComMaisEnergia->energia)
+			migalhaComMaisEnergia = migalhas[i];
+	}
+
+	if (f->podeMoverPara(migalhaComMaisEnergia->posx, migalhaComMaisEnergia->posy)) {
+		f->posx = migalhaComMaisEnergia->posx;
+		f->posy = migalhaComMaisEnergia->posy;
+	}
+	else {
+		do {
+			quadrante = m->getQuadrante(migalhaComMaisEnergia->posx, migalhaComMaisEnergia->posy);
+			if (quadrante == 1) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO PRIMEIRO QUADRANTE
+				min = x;
+				max = x + f->raioMovimento;
+				novaPosX = m->getAleatorio(min, max);
+				min = y;
+				max = y + f->raioMovimento;
+				novaPosY = m->getAleatorio(min, max);
+			}
+			else if (quadrante == 2) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO SEGUNDO QUADRANTE
+				min = x - f->raioMovimento;
+				max = x;
+				novaPosX = m->getAleatorio(min, max);
+				min = y;
+				max = y + f->raioMovimento;
+				novaPosY = m->getAleatorio(min, max);
+			}
+			else if (quadrante == 3) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO TERCEIRO QUADRANTE
+				min = x - f->raioMovimento;
+				max = x;
+				novaPosX = m->getAleatorio(min, max);
+				min = y - f->raioMovimento;
+				max = y;
+				novaPosY = m->getAleatorio(min, max);
+			}
+			else if (quadrante == 4) {
+				// IR PARA POSIÇÃO ALEATÓRIA NO QUARTO QUADRANTE
+				min = x;
+				max = x - f->raioMovimento;
+				novaPosX = m->getAleatorio(min, max);
+				min = y - f->raioMovimento;
+				max = y;
+				novaPosY = m->getAleatorio(min, max);
+			}
+
+		} while (!validaPos(novaPosX, novaPosY));
+
+		f->posx = novaPosX;
+		f->posy = novaPosY;
+	}
+
 }
 
 RegraProtege::RegraProtege(char tipo, Formiga &f, Mundo &m) :Regra()

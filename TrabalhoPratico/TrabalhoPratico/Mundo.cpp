@@ -265,6 +265,26 @@ Ninho * Mundo::encontraNinho(int x, int y) {
 	}
 	return NULL;
 }
+
+bool Mundo::temMigalha(int x, int y) {
+	for (int i = 0; i < this->getMigalhas().size(); i++) {
+		Migalha *m1 = this->getMigalhas()[i];
+		if (m1->posx == x && m1->posy == y) {
+			return true;
+		}
+	}
+	return false;
+}
+
+Migalha * Mundo::encontraMigalha(int x, int y) {
+	for (int i = 0; i < this->getMigalhas().size(); i++) {
+		Migalha *m1 = this->getMigalhas()[i];
+		if (m1->posx == x && m1->posy == y) {
+			return m1;
+		}
+	}
+	return NULL;
+}
 int Mundo::getQuadrante(int x, int y)
 {
 	if (x < 0 && y < 0)
@@ -322,8 +342,6 @@ void Mundo::mataFormiga(int posx, int posy)
 		}
 	}
 }
-
-
 
 bool Mundo::ocupada(int x, int y)
 {
