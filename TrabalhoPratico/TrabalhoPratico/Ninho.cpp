@@ -49,7 +49,8 @@ void Ninho::addFormiga(char tipo, int posx, int posy)
 	Formiga *f = new Formiga(tipo, px, py, *this);
 	formigas.reserve(formigas.size() + 1);
 	formigas.push_back(f);
-	m->addGrelha(px, py, f->avatar);
+	if(this->posx == px && this->posy == py)
+		m->addGrelha(px, py, f->avatar);
 }
 
 void Ninho::addEnergia(int valor)
@@ -76,6 +77,7 @@ Mundo * Ninho::getMundo()
 
 void Ninho::correRegras()
 {
+	char tipoFormiga;
 	// ITERA POR TODAS AS FORMIGAS DO NINHO
 	for (int i = 0; i < formigas.size(); i++) {
 		formigas[i]->correRegras();
@@ -84,17 +86,17 @@ void Ninho::correRegras()
 			int min = 0;
 			int max = 4;
 			int sorte = rand() % (max - min + 1) + min;
-			char tipo;
+			
 			int energiaARetirar;
 			switch (sorte) {
-			case 0: tipo = 'C'; energiaARetirar = 100; break;
-			case 1: tipo = 'A'; energiaARetirar = 80; break;
-			case 2: tipo = 'V'; energiaARetirar = 150; break;
-			case 3: tipo = 'E'; energiaARetirar = 200; break;
-			case 4: tipo = 'S'; energiaARetirar = 200; break;
+			case 0: tipoFormiga = 'C'; energiaARetirar = 100; break;
+			case 1: tipoFormiga = 'A'; energiaARetirar = 80; break;
+			case 2: tipoFormiga = 'V'; energiaARetirar = 150; break;
+			case 3: tipoFormiga = 'E'; energiaARetirar = 200; break;
+			case 4: tipoFormiga = 'S'; energiaARetirar = 200; break;
 			}
-			this->addFormiga(tipo, this->posx, this->posy);
-			this->energia -= energiaARetirar;
+			//this->addFormiga(tipoFormiga, this->posx, this->posy);
+			//this->energia -= energiaARetirar;
 		}
 	}
 }

@@ -137,4 +137,17 @@ public:
 	}
 };
 
+class RegraSuicida : public Regra
+{
+protected:
+	vector<Formiga *> formigas;
+public:
+	RegraSuicida(char tipo, Formiga &f, Mundo &m);
+
+	bool condicao();
+	void acao();
+	//bool validaPos(int x, int y) { return true; };
+
+	
+};
 #endif

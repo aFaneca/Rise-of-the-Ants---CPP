@@ -176,7 +176,7 @@ bool Processador::valida(vector<string> palavra, int *limite, double *energiaIni
 			cout << "Será que quis dizer \"cria1 <T> <N> <linha> <coluna>\"?";
 		}
 		else if (palavra[1].size() != 1 || (palavra[1].compare("E") != 0 && palavra[1].compare("C") != 0 &&
-			palavra[1].compare("V") != 0 && palavra[1].compare("A") != 0 && palavra[1].compare("S") != 0)) { // VERIFICAR SE O TIPO É CORRETO
+			palavra[1].compare("V") != 0 && palavra[1].compare("A") != 0 && palavra[1].compare("S") && palavra[1].compare("K") != 0)) { // VERIFICAR SE O TIPO É CORRETO
 			cerr << "Tipo de Formiga inválido.";
 		}
 		else {
