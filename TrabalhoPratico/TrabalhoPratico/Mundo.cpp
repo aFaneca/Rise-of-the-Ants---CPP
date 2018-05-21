@@ -152,6 +152,7 @@ void Mundo::iteracao()
 }
 
 void Mundo::iteraFormigas() {
+	
 	for (int i = 0; i < comunidades.size(); i++) {
 		// VERIFICA NINHOS
 		for (int j = 0; j < comunidades[i]->getNinho()->getFormigas().size(); j++) {
@@ -163,7 +164,7 @@ void Mundo::iteraFormigas() {
 				comunidades[i]->getNinho()->getFormigas()[j]->foraDoNinho++;
 			else
 				comunidades[i]->getNinho()->getFormigas()[j]->foraDoNinho = 0;
-			
+
 			if (comunidades[i]->getNinho()->getFormigas()[j]->getEnergia() < 1) {
 				int posx = comunidades[i]->getNinho()->getFormigas()[j]->posx;
 				int posy = comunidades[i]->getNinho()->getFormigas()[j]->posy;
@@ -185,7 +186,7 @@ void Mundo::iteraMigalhas() {
 		if (migalhas[i]->energia < (migalhas[i]->getEnergiaInicial() * 0.1)) {
 			delete migalhas[i];
 			if (!migalhas.empty())
-				migalhas.erase(migalhas.begin() + i);
+				migalhas.erase(migalhas.begin() + i); // MATA MIGALHAS
 		}
 	}
 }

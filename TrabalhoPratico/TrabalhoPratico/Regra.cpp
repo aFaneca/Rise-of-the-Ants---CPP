@@ -574,3 +574,58 @@ void RegraVaiParaNinho::acao() {
 
 	
 }
+
+
+
+RegraSuicida::RegraSuicida(char tipo, Formiga & f, Mundo & m)
+{
+	this->tipo = tipo;
+	this->f = &f;
+	this->m = &m;
+
+}
+// TEM FORMIGA ADJACENTE?
+bool RegraSuicida::condicao()
+{
+	int px = f->posx;
+	int py = f->posy;
+	
+	if (m->temFormiga(px + 1, py))
+		formigas.push_back(m->encontraFormiga(px + 1, py));
+
+	if (m->temFormiga(px - 1, py))
+		formigas.push_back(m->encontraFormiga(px + 1, py));
+
+	if (m->temFormiga(px, py + 1))
+		formigas.push_back(m->encontraFormiga(px + 1, py));
+
+	if (m->temFormiga(px, py - 1))
+		formigas.push_back(m->encontraFormiga(px + 1, py));
+
+	if (formigas.size() > 0)
+		return true;
+
+	return false;
+}
+
+void RegraSuicida::acao()
+{
+	int px = f->posx;
+	int py = f->posy;
+
+	if (m->temFormiga(px + 1, py))
+		f->getNinho()->mataFormiga(m->encontraFormiga(px + 1,py)->getId());
+
+	if (m->temFormiga(px - 1, py))
+		f->getNinho()->mataFormiga(m->encontraFormiga(px - 1, py)->getId());
+
+	if (m->temFormiga(px, py + 1))
+		f->getNinho()->mataFormiga(m->encontraFormiga(px, py + 1)->getId());
+
+	if (m->temFormiga(px, py - 1))
+		f->getNinho()->mataFormiga(m->encontraFormiga(px, py - 1)->getId());
+
+
+	f->getNinho()->mataFormiga(f->getId());
+
+}

@@ -20,6 +20,22 @@ Formiga::~Formiga()
 
 
 void Formiga::setPropriedades(char tipo) {
+
+	if (tipo == 'K') {
+		this->avatar = 'K';
+		this->raioVisao = 10;
+		this->raioMovimento = 8;
+		this->energia = this->energiaInicial = 200;
+
+		regras.reserve(regras.size() + 2);
+		regras.push_back(new RegraSuicida(tipo, *this, *n->getMundo()));
+		regras.push_back(new RegraPasseia(tipo, *this, *n->getMundo()));
+
+
+	}
+
+
+
 	if (tipo == 'E') {
 		this->avatar = 'E';
 		this->raioVisao = 10;
@@ -167,13 +183,14 @@ Ninho * Formiga::getNinho() {
 void Formiga::correRegras()
 {
 	if (!n->getMundo()->temNinho(this->posx, this->posy)) {
-		for (int i = 0; i < regras.size(); i++) {
-			if (regras[i]->condicao()) {
-				regras[i]->acao();
+		for (int i = 0; i < this->regras.size(); i++) {
+			if (this->regras[i]->condicao()) {
+				this->regras[i]->acao();
 				break;
 			}
 		}
 	}
+	
 	// SE ESTIVER NO NINHO
 	else {
 		if (this->energia > 0.5 * this->energiaInicial) {
@@ -192,7 +209,6 @@ void Formiga::correRegras()
 			this->mover();
 
 	}
-
 
 	
 }

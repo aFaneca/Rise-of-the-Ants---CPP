@@ -165,7 +165,6 @@ void Interface::listaPosicao(int x, int y, Mundo & mundo) {
 void Interface::movimentos(Mundo & mundo) {
 	mundo.geraMaisMigalhas();
 	mundo.iteracao();
-	
 }
 
 void Interface::mostraMundo(Mundo & mundo)
